@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\General;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,10 +23,25 @@ class Task extends Model
         'created_at',
     ];
 
-    public function getCreatedAtAttribute($value)
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($value): mixed
     {
         return $value;
     }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getImgAttribute($value): string
+    {
+        return General::getPath($value, '', 'storage/task/');
+    }
+
+
 
     /**
      * @return BelongsTo

@@ -23,7 +23,7 @@ class TaskResource extends JsonResource
             'id' => $this->id,
             'status' => $this->status,
             'title' => $this->title,
-            'img' => General::getPath($this->img, '', 'storage/task/'),
+            'img' => $this->img,
             'description' => $this->description,
             'created_by' => new UserResource($this->owner),
             'assigned_to' => new UserResource($this->assigned),
