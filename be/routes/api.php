@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +15,11 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
-Route::post('user',[UserController::class, 'store']);
+Route::post('user', [UserController::class, 'store']);
+
+Route::middleware(['auth:api', 'verified'])->group(function () {
+    Route::post('task/{user}', [TaskController::class, 'store']);
+    Route::put('task/{task}/{user}', [TaskController::class, 'update']);
+    Route::post('task/{task}/img', [TaskController::class, 'updateImg']);
+    Route::delete('task/{task}', [TaskController::class, 'destroy']);
+});

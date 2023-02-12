@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -49,5 +52,21 @@ class User extends Authenticatable
     public function setPasswordAttribute($value): void
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function taskOwner(): HasMany
+    {
+        return $this->hasMany(Task::class, 'created_by');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function taskAssigned(): BelongsTo
+    {
+        return $this->belongsTo(Task::class);
     }
 }
