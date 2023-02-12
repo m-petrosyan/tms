@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Task;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use JsonSerializable;
 
-class UserCollection extends ResourceCollection
+class TaskCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
