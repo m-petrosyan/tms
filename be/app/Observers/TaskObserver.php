@@ -24,7 +24,7 @@ class TaskObserver
      */
     public function updating(Task $task): void
     {
-        if ($task->isDirty('img') && $task->getOriginal('img')){
+        if ($task->isDirty('img') && $task->getOriginal('img')) {
             General::deleteFile($task->getOriginal('img'), 'task');
         }
     }
@@ -48,6 +48,8 @@ class TaskObserver
      */
     public function deleted(Task $task): void
     {
-        General::deleteFile($task->img, 'task');
+        if ($task->img) {
+            General::deleteFile($task->img, 'task');
+        }
     }
 }

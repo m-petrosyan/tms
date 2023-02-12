@@ -4,20 +4,27 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\User\UserImgUpdateRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\User\UserResource;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     protected UserService $userService;
-    public function __construct(UserService $userService){
+
+    public function __construct(UserService $userService)
+    {
         $this->userService = $userService;
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -38,34 +45,47 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  User  $user
+     * @return UserResource
      */
-    public function show($id)
+    public function show(User $user): UserResource
     {
-        //
+        return new UserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  UserUpdateRequest  $request
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request): Response
     {
-        //
+        $this->userService->update($request->validated());
+
+        return response()->noContent();
+    }
+
+    /**
+     * @param  UserImgUpdateRequest  $request
+     * @return Response
+     */
+    public function updateImg(UserImgUpdateRequest $request): Response
+    {
+        $this->userService->updateImg(auth()->user(), $request->profile_pic, 'profile_pic', '/user');
+
+        return response()->noContent();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(): Response
     {
-        //
+        auth()->user()->delete();
+
+        return response()->noContent();
     }
 }

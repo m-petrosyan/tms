@@ -33,15 +33,12 @@ class Task extends Model
     }
 
     /**
-     * @param $value
      * @return string
      */
-    public function getImgAttribute($value): string
+    public function imgUrl(): string
     {
-        return General::getPath($value, '', 'storage/task/');
+        return General::getPath($this->img, '', 'storage/task/');
     }
-
-
 
     /**
      * @return BelongsTo
