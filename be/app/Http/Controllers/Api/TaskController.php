@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\TaskCreateRequest;
 use App\Http\Requests\Task\TaskImgUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
+use App\Http\Resources\Task\TaskCollection;
 use App\Http\Resources\Task\TaskResource;
 use App\Models\Task;
 use App\Models\User;
@@ -23,11 +24,11 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return TaskCollection
      */
-    public function index()
+    public function index(): TaskCollection
     {
-        //
+        return new TaskCollection(Task::paginate(15));
     }
 
     /**
@@ -45,12 +46,12 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Task  $task
-     * @return Response
+     * @param  Task  $task
+     * @return TaskResource
      */
-    public function show(Task $task)
+    public function show(Task $task): TaskResource
     {
-        //
+        return new TaskResource($task);
     }
 
     /**
