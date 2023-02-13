@@ -11,7 +11,6 @@ use App\Http\Resources\Task\TaskResource;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\TaskService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TaskController extends Controller
