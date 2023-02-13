@@ -27,11 +27,4 @@ class TaskService extends FileService
     {
         $task->update(Arr::only($request,['title','description','status'])+['assigned_to'=> $user->id]);
     }
-
-    public function updateImg(object $task, $img)
-    {
-        $fileName = $this->uploadMedia($img, '/task')['name'];
-
-        $task->update(['img' => $fileName]);
-    }
 }

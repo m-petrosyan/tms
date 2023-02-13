@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
-class UserService
+class UserService extends FileService
 {
     /**
      * @param  array  $request
@@ -18,5 +18,10 @@ class UserService
             'email' => $request['email'],
             'password' => $request['password'],
         ]);
+    }
+
+    public function update($request)
+    {
+        auth()->user()->update($request);
     }
 }

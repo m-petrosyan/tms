@@ -16,10 +16,12 @@ use Illuminate\Http\Response;
 class TaskController extends Controller
 {
     protected TaskService $taskService;
+
     public function __construct(TaskService $taskService)
     {
         $this->taskService = $taskService;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -75,7 +77,7 @@ class TaskController extends Controller
      */
     public function updateImg(TaskImgUpdateRequest $request, Task $task): Response
     {
-        $this->taskService->updateImg($task, $request->img);
+        $this->taskService->updateImg($task, $request->img, 'img', '/task');
 
         return response()->noContent();
     }
