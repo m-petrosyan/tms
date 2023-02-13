@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Task;
 
+use App\Enum\StatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class TaskUpdateRequest extends FormRequest
 {
@@ -26,7 +28,7 @@ class TaskUpdateRequest extends FormRequest
         return [
             'title' => ['min:2'],
             'description' => ['min:8'],
-            'status' => ['numeric']
+            'status' => ['numeric', new Enum(StatusEnum::class)]
         ];
     }
 }
