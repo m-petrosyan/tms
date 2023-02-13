@@ -8,6 +8,7 @@ use App\Http\Requests\Task\TaskImgUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Resources\Task\TaskCollection;
 use App\Http\Resources\Task\TaskResource;
+use App\Http\Resources\task\TasksCollection;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\TaskService;
@@ -25,11 +26,11 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return TaskCollection
+     * @return TasksCollection
      */
-    public function index(): TaskCollection
+    public function index(): TasksCollection
     {
-        return new TaskCollection(Task::paginate(15));
+        return new TasksCollection(Task::select('status')->groupBy('status')->paginate(15));
     }
 
     /**
