@@ -134,6 +134,7 @@
       <excludeFolder url="file://$MODULE_DIR$/be/vendor/laravel/passport" />
       <excludeFolder url="file://$MODULE_DIR$/be/vendor/nyholm/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/be/vendor/sebastian/comparator" />
+      <excludeFolder url="file://$MODULE_DIR$/be/vendor/fruitcake/laravel-cors" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

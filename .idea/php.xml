@@ -138,6 +138,7 @@
       <path value="$PROJECT_DIR$/be/vendor/phpseclib/phpseclib" />
       <path value="$PROJECT_DIR$/be/vendor/psr/clock" />
       <path value="$PROJECT_DIR$/be/vendor/laravel/passport" />
+      <path value="$PROJECT_DIR$/be/vendor/fruitcake/laravel-cors" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
