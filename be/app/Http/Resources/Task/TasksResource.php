@@ -18,7 +18,7 @@ class TasksResource extends JsonResource
 //        dd($this);
         return [
             'title' => $this->status,
-            'data' => new TaskCollection(Task::where('status', $this->status)->get())
+            'data' => new TaskCollection(Task::where('status', $this->status)->orderBy('index','asc')->get())
         ];
     }
 }

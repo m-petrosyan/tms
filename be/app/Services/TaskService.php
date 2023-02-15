@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Task;
 use Illuminate\Support\Arr;
 
 class TaskService extends FileService
@@ -14,7 +13,7 @@ class TaskService extends FileService
      */
     public function store(array $request, object $user): mixed
     {
-        return $user->taskAssigned()->create(Arr::only($request,['title','description','status'])+['assigned_to'=> $user->id]);
+        return $user->taskAssigned()->create(Arr::only($request,['title','description','status'])+['assigned_to'=> $user->id,'index' => -1]);
     }
 
     /**
@@ -25,6 +24,6 @@ class TaskService extends FileService
      */
     public function update(object $task, object $user, array $request): void
     {
-        $task->update(Arr::only($request,['title','description','status'])+['assigned_to'=> $user->id]);
+        $task->update(Arr::only($request,['title','description','status','index'])+['assigned_to'=> $user->id]);
     }
 }
