@@ -28,7 +28,8 @@ class TaskUpdateRequest extends FormRequest
         return [
             'title' => ['min:2'],
             'description' => ['min:8'],
-            'status' => ['numeric', new Enum(StatusEnum::class)]
+            'status' => ['numeric', new Enum(StatusEnum::class)],
+            'index' => ['numeric']
         ];
     }
 }

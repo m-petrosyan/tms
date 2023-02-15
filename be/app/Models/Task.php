@@ -16,7 +16,8 @@ class Task extends Model
         'title',
         'img',
         'description',
-        'status'
+        'status',
+        'index'
     ];
 
     protected $dates = [

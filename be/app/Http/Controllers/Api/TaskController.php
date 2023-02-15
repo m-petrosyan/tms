@@ -30,7 +30,7 @@ class TaskController extends Controller
      */
     public function index(): TasksCollection
     {
-        return new TasksCollection(Task::select('status')->groupBy('status')->paginate(15));
+        return new TasksCollection(Task::select('status')->groupBy('status')->orderBy('status','asc')->get());
     }
 
     /**

@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('created_by')->nullable()->constrained('users')->cascadeOnUpdate();
             $table->foreignId('assigned_to')->nullable()->constrained('users')->cascadeOnUpdate();
+            $table->smallInteger('status')->default(0);
+            $table->integer('index')->default(0);
             $table->string('title')->index();
             $table->string('img')->nullable();
             $table->text('description')->nullable();
-            $table->smallInteger('status')->default(0);
             $table->timestamps();
         });
     }
