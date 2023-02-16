@@ -4,20 +4,20 @@
       <label class="user-avatar">
         <label class="block avatar pointer mx-auto" for="cover"
                :style="{backgroundImage : `url(${!preview ? image: preview })`}"/>
-        <input type="file" hidden="" accept="image/*" id="cover" @change="uploadCover">
+        <input type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
       </label>
       <div class="form mb-5">
         <div class="mt-10">
-          <input type="text" class="block mx-auto" placeholder="full name" autocomplete="off">
+          <input type="text" class="block mx-auto" placeholder="full name" autocomplete="off" :disabled="loading">
         </div>
         <div class="mt-10">
-          <input type="email" class="block mx-auto" placeholder="email" autocomplete="off">
+          <input type="email" class="block mx-auto" placeholder="email" autocomplete="off" :disabled="loading">
         </div>
         <div class="mt-10">
-          <input type="password" class="block mx-auto" placeholder="password" autocomplete="off">
+          <input type="password" class="block mx-auto" placeholder="password" autocomplete="off" :disabled="loading">
         </div>
         <div class="mt-10">
-          <button class="block mx-auto save" @click="$emit('update:loading', true)">Save</button>
+          <button class="block mx-auto save" @click="$emit('update:loading', true)" :disabled="loading">Save</button>
         </div>
       </div>
     </div>
@@ -29,16 +29,15 @@ export default {
   name: "UserEdit",
   data() {
     return {
-      image: 'https://assets.website-files.com/632f8897a9082d4ee0743070/6339d0586a79c5e4484979a2_Avatar%201.png',
+      image: require('@/assets/images/avatar.png'),
       preview: null,
     }
   },
-  props:{
+  props: {
     loading: Boolean
   },
   methods: {
     uploadCover(file) {
-      console.log(file.target.files)
       this.preview = URL.createObjectURL(file.target.files[0])
       this.image = file.target.files[0]
     },
@@ -77,12 +76,6 @@ export default {
     &::placeholder {
       text-align: center;
     }
-  }
-  .save{
-    border: 1px solid #ff5722;
-    color: #f44336;
-    padding: 1px 20px;
-    border-radius: 5px;
   }
 }
 </style>

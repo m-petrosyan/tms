@@ -12,8 +12,37 @@
       >
         <template #item="{ element }">
           <div class="item">
-            <img class="item-img" :src="element.img" alt="">
-            <div class="item-title">{{ element.title }}</div>
+            <div class="item-img">
+              <img class="img" :src="element.img" alt="">
+            </div>
+            <div class="item-info">
+              <div class="item-title">
+                <p>{{ element.title }}</p>
+              </div>
+              <div class="flex justify-between mt-2">
+                <div class="other-info flex items-center gap-x-2">
+                  <div class="description" v-if="element.description">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="icon w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/>
+                    </svg>
+                  </div>
+                  <div class="date flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="icon w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p class=" ">{{element.created_at}}</p>
+                  </div>
+                </div>
+                <div class="users flex gap-x-2">
+                  <div class="user" :style="{backgroundImage : `url(${require('@/assets/images/avatar.png')})`}"/>
+                  <div class="user" :style="{backgroundImage : `url(${require('@/assets/images/avatar2.jpg')})`}"/>
+                </div>
+              </div>
+            </div>
           </div>
         </template>
       </vuedraggable>
@@ -123,8 +152,32 @@ export default {
           width: 100%;
         }
 
-        .item-title {
+        .item-info {
           padding: 15px;
+          color: #636b78;
+
+          .other-info {
+            .icon {
+              height: 20px;
+            }
+
+            .date {
+
+            }
+          }
+
+          .item-title {
+
+          }
+
+          .users {
+            .user {
+              height: 40px;
+              width: 40px;
+              background-size: contain;
+              border-radius: 100%;
+            }
+          }
         }
       }
     }

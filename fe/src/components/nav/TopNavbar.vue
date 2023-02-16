@@ -1,9 +1,9 @@
 <template>
   <nav class=" py-2">
     <div class="flex justify-between mx-auto w-8/12 h-full">
-      <div class="search flex pr-2">
+      <div class="search flex">
         <input type="search">
-        <button>
+        <button class="px-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -13,7 +13,7 @@
       </div>
       <div class="right-side flex gap-x-5">
         <div class="add h-full">
-          <button class="flex justify-center items-center">
+          <button class="flex justify-center items-center" @click="modalToggle(true, 'TaskEdit')">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -21,14 +21,15 @@
           </button>
         </div>
         <div class="user h-full">
-          <button class="frame h-full" @click="$emit('update:showModal', !showModal)">
-            <img src="@/assets/images/avatar.jpg" alt="">
+          <button class="frame h-full" @click="modalToggle(true, auth ? 'UserEdit' : 'UserLogin')">
+            <img src="@/assets/images/avatar.png" alt="">
           </button>
         </div>
       </div>
     </div>
   </nav>
-  <PopupWindow :closeModal="()=>$emit('update:showModal', false)" :showModal="showModal"/>
+  <PopupWindow :closeModal="()=>$emit('update:showModal', false)" :showModal="showModal"
+               :modalComponent="modalComponent"/>
 </template>
 
 <script>
@@ -43,7 +44,10 @@ export default {
   //   }
   // }
   props: {
-    showModal: Boolean
+    showModal: Boolean,
+    modalComponent: String,
+    modalToggle: Function,
+    auth: Object
   },
   methods: {
     closeModal(e) {
@@ -65,10 +69,17 @@ nav {
     input {
       background-color: transparent;
       height: 100%;
+      width: 80%;
+      padding-right: 0;
       padding-left: 5px;
+      transition: 1s;
 
       &:focus {
+        padding-right: 20px;
         outline: white;
+        width: 100%;
+        background-color: white;
+        transition: 1s;
       }
     }
 

@@ -1,7 +1,7 @@
 <template>
-  <div class="content" >
-    <TopNavbar v-model:showModal="showModal"/>
-    <router-view :showModal="showModal" :class="{blur: showModal}"/>
+  <div class="content">
+    <TopNavbar v-model:showModal="showModal" :modalToggle="modalToggle" :modalComponent="modalComponent" :auth="auth"/>
+    <router-view :showModal="showModal" class="router-view" :class="{blur: showModal}"/>
   </div>
 </template>
 
@@ -11,10 +11,22 @@ import TopNavbar from "@/components/nav/TopNavbar.vue";
 export default {
   data() {
     return {
-      showModal: false
+      showModal: false,
+      modalComponent: ''
     }
   },
-  components:{
+  methods: {
+    modalToggle(showModal, component) {
+      this.showModal = showModal
+      this.modalComponent = component
+    }
+  },
+  computed: {
+    auth() {
+      return this.$store.getters.getAuth
+    }
+  },
+  components: {
     TopNavbar
   }
 }
@@ -29,6 +41,10 @@ export default {
     background-image: url("@/assets/images/bg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+
+    .router-view {
+      transition: 1s;
+    }
   }
 }
 </style>

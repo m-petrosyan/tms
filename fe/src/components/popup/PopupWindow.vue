@@ -9,7 +9,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
-        <component :is="UserEdit" :class="{blur: loading}" v-model:loading="loading"/>
+        <component :is="Component" class="component" :class="{blur: loading}" v-model:loading="loading"/>
       </div>
     </div>
   </Teleport>
@@ -18,26 +18,31 @@
 <script>
 import UserEdit from "@/components/popup/UserEdit.vue";
 import TaskEdit from "@/components/popup/TaskEdit.vue";
+import UserLogin from "@/components/popup/UserLogin.vue";
 
 export default {
   name: "PopupWindow",
-  data(){
+  data() {
     return {
-      loading: false
+      loading: false,
+      comp: 'UserEdit'
     }
   },
   computed: {
-    TaskEdit() {
-      return TaskEdit
-    },
-    UserEdit() {
-      return UserEdit
+    Component() {
+      return this.modalComponent
     }
   },
   props: {
     showModal: Boolean,
+    modalComponent: String,
     closeModal: Function
   },
+  components: {
+    UserEdit,
+    TaskEdit,
+    UserLogin
+  }
 }
 </script>
 
@@ -57,6 +62,30 @@ export default {
     margin: 150px auto;
     background-color: white;
     width: 500px;
+
+    ::v-deep(.component) {
+      .form {
+        input {
+          border: 1px solid #d2d2d2;
+          border-radius: 5px;
+
+          &:disabled {
+            cursor: not-allowed;
+          }
+        }
+
+        .save {
+          border: 1px solid #ff5722;
+          color: #f44336;
+          padding: 1px 20px;
+          border-radius: 5px;
+
+          &:disabled {
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
 
     .close-modal {
       position: absolute;
@@ -84,6 +113,7 @@ export default {
       border-top: 4px solid #FF5722;
       -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
+
       &::before,
       &::after {
         content: "";
@@ -91,6 +121,7 @@ export default {
         border-radius: 50%;
         border: 4px solid transparent;
       }
+
       &::before {
         top: 5px;
         left: 5px;
@@ -100,6 +131,7 @@ export default {
         -webkit-animation: spin 3s linear infinite;
         animation: spin 3.5s linear infinite;
       }
+
       &::after {
         top: 15px;
         left: 15px;
@@ -109,8 +141,6 @@ export default {
         -webkit-animation: spin 1.5s linear infinite;
         animation: spin 1.75s linear infinite;
       }
-
-
 
       @-webkit-keyframes spin {
         from {
@@ -123,7 +153,6 @@ export default {
         }
       }
 
-
       @keyframes spin {
         from {
           -webkit-transform: rotate(0deg);
@@ -135,9 +164,6 @@ export default {
         }
       }
     }
-
-
-
   }
 
 
