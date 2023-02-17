@@ -5,15 +5,20 @@ export default {
         auth: null,
         users: null,
         user: null,
+        error: null
     },
     getters: {
         getUser: state => state.user,
         getUsers: state => state.users,
-        getAuth: state => state.auth
+        getAuth: state => state.auth,
+        getError: state => state.error
     },
     mutations: {
         setToken(state, data) {
             sessionStorage.setItem('token', data)
+        },
+        setError(state, data) {
+            state.error = data
         },
         setAuth(state, data) {
             state.auth = data
@@ -27,7 +32,7 @@ export default {
 
     },
     actions: {
-        signIn({commit}, {data}) {
+        signIn({commit}, data) {
             return postRequest('/oauth/token', {
                 username: data.username,
                 password: data.password,
@@ -36,15 +41,15 @@ export default {
                 client_secret: process.env.VUE_APP_CLIENT_SECRET
             }, commit)
                 .then(response => commit("setToken", response.access_token))
-                .catch(error => Promise.reject(error));
+                .catch(error => commit("setError", error.error_description));
         },
         auth({commit}) {
-            return getRequest( '/auth', '', commit)
+            return getRequest('/auth', '', commit)
                 .then(response => commit("setAuth", response.data))
                 .catch(error => Promise.reject(error));
         },
         getUsers({commit}, data) {
-            return getRequest( '/user', data, commit)
+            return getRequest('/user', data, commit)
                 .then(response => commit("setUsers", response))
                 .catch(error => Promise.reject(error));
         },

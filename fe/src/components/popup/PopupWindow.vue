@@ -3,13 +3,14 @@
     <div v-if="showModal" class="modal">
       <div class="modal-content relative">
         <div class="triple-spinner" v-if="loading"/>
-        <button class="close-modal" @click="closeModal(false)">
+        <button class="close-modal" @click="closeModal">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
-        <component :is="Component" class="component" :class="{blur: loading}" v-model:loading="loading"/>
+        <component :is="Component" class="component" :class="{blur: loading}" v-model:loading="loading" :auth="auth"
+                   :closeModal="closeModal"/>
       </div>
     </div>
   </Teleport>
@@ -36,7 +37,8 @@ export default {
   props: {
     showModal: Boolean,
     modalComponent: String,
-    closeModal: Function
+    closeModal: Function,
+    auth: Object
   },
   components: {
     UserEdit,
