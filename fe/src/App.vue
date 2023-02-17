@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <TopNavbar v-model:showModal="showModal" :modalToggle="modalToggle" :modalComponent="modalComponent" :auth="auth"/>
-    <router-view :showModal="showModal" class="router-view" :class="{blur: showModal}"/>
+    <router-view :showModal="showModal" class="router-view" :class="{blur: showModal}" :auth="auth"/>
   </div>
 </template>
 
@@ -19,6 +19,11 @@ export default {
     modalToggle(showModal, component) {
       this.showModal = showModal
       this.modalComponent = component
+    }
+  },
+  created() {
+    if (sessionStorage.getItem('token')) {
+      this.$store.dispatch('auth')
     }
   },
   computed: {

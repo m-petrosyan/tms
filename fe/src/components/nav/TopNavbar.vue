@@ -22,14 +22,14 @@
         </div>
         <div class="user h-full">
           <button class="frame h-full" @click="modalToggle(true, auth ? 'UserEdit' : 'UserLogin')">
-            <img src="@/assets/images/avatar.png" alt="">
+            <img :src="auth ? auth.profile_pic : require('@/assets/images/avatar.png')" alt="">
           </button>
         </div>
       </div>
     </div>
   </nav>
   <PopupWindow :closeModal="()=>$emit('update:showModal', false)" :showModal="showModal"
-               :modalComponent="modalComponent"/>
+               :modalComponent="modalComponent" :auth="auth"/>
 </template>
 
 <script>
@@ -38,22 +38,12 @@ import PopupWindow from "@/components/popup/PopupWindow.vue";
 export default {
   name: "TopNavbar",
   components: {PopupWindow},
-  // data(){
-  //   return {
-  //     showModal: false
-  //   }
-  // }
   props: {
     showModal: Boolean,
     modalComponent: String,
     modalToggle: Function,
     auth: Object
   },
-  methods: {
-    closeModal(e) {
-      alert(e)
-    }
-  }
 }
 </script>
 
@@ -109,7 +99,8 @@ nav {
         overflow: hidden;
 
         img {
-          height: 100%;
+          height: 34px;
+          width: 34px;
         }
       }
     }

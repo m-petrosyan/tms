@@ -3,11 +3,14 @@
     <h3 class="title">{{ title }}</h3>
     <div class="list-content" tag="transition-group" :component-data="{name:'fade'}">
       <vuedraggable
+          :disabled="disable"
           :move="checkMove"
-          class="list-group"
           :list="task.data"
+          class="list-group"
           group="tasks"
           @change="log"
+          @start="change"
+          @click="aa"
           itemKey="name"
       >
         <template #item="{ element }">
@@ -34,7 +37,7 @@
                       <path stroke-linecap="round" stroke-linejoin="round"
                             d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <p class=" ">{{element.created_at}}</p>
+                    <p class=" ">{{ element.created_at }}</p>
                   </div>
                 </div>
                 <div class="users flex gap-x-2">
@@ -58,35 +61,44 @@ export default {
   name: "TaskItem",
   data() {
     return {
-      newStatus: null
+      newStatus: null,
     }
   },
   components: {
     vuedraggable,
   },
   props: {
+    auth: Object,
     task: Object,
     title: String,
     status: Number,
     updateTask: Function
   },
   methods: {
+    aa() {
+      // alert()
+    },
+    change() {
+      // alert()
+    },
     checkMove(e) {
       console.log(e)
-      // this.newStatus = e.relatedContext.element.status
       this.$emit('update:status', e.relatedContext.element.status)
     },
     log(e) {
-      // console.log(e)
-      // console.log(e.added.element)
       console.log(e)
       const action = e.moved ? 'moved' : 'added';
       this.updateTask({
         data: {index: e[action].newIndex},
         id: e[action].element.id,
         to: e[action].element.assigned_to.id
-      })
+      }).catch(() => alert())
     },
+  },
+  computed: {
+    disable() {
+      return !this.auth ? true : false
+    }
   }
 }
 </script>
@@ -103,7 +115,6 @@ export default {
     color: #283851;
     margin-bottom: 10px;
     text-transform: capitalize;
-
   }
 
   .list-content {
@@ -111,6 +122,9 @@ export default {
     max-height: 600px;
     overflow: auto;
     padding: 0 4px;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 
     &::-webkit-scrollbar {
       width: 8px;
@@ -136,7 +150,6 @@ export default {
       min-height: 200px;
       height: 100%;
 
-
       .item {
         cursor: pointer;
         background: white;
@@ -160,14 +173,6 @@ export default {
             .icon {
               height: 20px;
             }
-
-            .date {
-
-            }
-          }
-
-          .item-title {
-
           }
 
           .users {
