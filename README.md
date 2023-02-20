@@ -1,5 +1,5 @@
-# tms
-Task management system
+# TMS
+task management system
 
 # installation
 
