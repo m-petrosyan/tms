@@ -13,7 +13,7 @@
           itemKey="name"
       >
         <template #item="{ element }">
-          <div class="item" :class="{'opacity-75' : access(element) && auth}" @click.prevent="viewTask(element.id)">
+          <div class="item" :class="{'opacity-75' : auth && access(element)}" @click.prevent="viewTask(element.id)">
             <div class="item-img">
               <img class="img" :src="element.img" alt="">
             </div>
