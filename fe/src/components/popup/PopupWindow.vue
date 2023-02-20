@@ -1,15 +1,19 @@
 <template>
   <Teleport to="body" class="popup">
-    <div v-if="showModal" class="modal">
-      <div class="modal-content relative">
-        <div class="triple-spinner" v-if="loading"/>
+    <div class="modal">
+      <div class="modal-content relative" :class="{'task-edit' : Component === 'taskedit'}">
+        <PreloaderElement class="triple-spinner" v-if="loading"/>
         <button class="close-modal" @click="closeModal">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
-        <component :is="Component" class="component" :class="{blur: loading}" v-model:loading="loading" :auth="auth"
+        <component :is="Component"
+                   class="component"
+                   :class="{blur: loading}"
+                   v-model:loading="loading"
+                   :auth="auth"
                    :closeModal="closeModal"/>
       </div>
     </div>
@@ -17,9 +21,11 @@
 </template>
 
 <script>
-import UserEdit from "@/components/popup/UserEdit.vue";
-import TaskEdit from "@/components/popup/TaskEdit.vue";
-import UserLogin from "@/components/popup/UserLogin.vue";
+import useredit from "@/components/popup/UserEdit.vue";
+import userview from "@/components/popup/UserEdit.vue";
+import taskedit from "@/components/popup/TaskViewEdit.vue";
+import login from "@/components/popup/UserLogin.vue";
+import PreloaderElement from "@/components/elements/Preloader.vue";
 
 export default {
   name: "PopupWindow",
@@ -29,21 +35,27 @@ export default {
       comp: 'UserEdit'
     }
   },
+
   computed: {
     Component() {
       return this.modalComponent
     }
   },
   props: {
-    showModal: Boolean,
     modalComponent: String,
-    closeModal: Function,
     auth: Object
   },
+  methods: {
+    closeModal() {
+      this.$router.push({name: 'home'})
+    }
+  },
   components: {
-    UserEdit,
-    TaskEdit,
-    UserLogin
+    PreloaderElement,
+    useredit,
+    userview,
+    taskedit,
+    login
   }
 }
 </script>
@@ -60,10 +72,27 @@ export default {
 
   .modal-content {
     border-radius: 5px;
-    padding: 20px;
     margin: 150px auto;
     background-color: white;
+    min-height: 200px;
     width: 500px;
+    padding: 20px;
+
+    &.task-edit {
+      padding: 0;
+
+      .close-modal {
+        border-radius: 100%;
+        background-color: #a1a1a133;
+        padding: 5px;
+
+        svg {
+          width: 18px;
+          height: 18px;
+          color: white;
+        }
+      }
+    }
 
     ::v-deep(.component) {
       .form {
@@ -91,79 +120,11 @@ export default {
 
     .close-modal {
       position: absolute;
-      right: 0;
-      top: 0;
+      right: 5px;
+      top: 5px;
 
       svg {
-        color: #706b6b;
-      }
-    }
-
-    .triple-spinner {
-      display: block;
-      position: absolute;
-      right: 0;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      z-index: 1;
-      width: 125px;
-      height: 125px;
-      border-radius: 50%;
-      border: 4px solid transparent;
-      border-top: 4px solid #FF5722;
-      -webkit-animation: spin 2s linear infinite;
-      animation: spin 2s linear infinite;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        border-radius: 50%;
-        border: 4px solid transparent;
-      }
-
-      &::before {
-        top: 5px;
-        left: 5px;
-        right: 5px;
-        bottom: 5px;
-        border-top-color: #FF9800;
-        -webkit-animation: spin 3s linear infinite;
-        animation: spin 3.5s linear infinite;
-      }
-
-      &::after {
-        top: 15px;
-        left: 15px;
-        right: 15px;
-        bottom: 15px;
-        border-top-color: #FFC107;
-        -webkit-animation: spin 1.5s linear infinite;
-        animation: spin 1.75s linear infinite;
-      }
-
-      @-webkit-keyframes spin {
-        from {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        to {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes spin {
-        from {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        to {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
+        color: #607d8b;
       }
     }
   }

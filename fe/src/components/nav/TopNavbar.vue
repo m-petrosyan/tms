@@ -1,5 +1,5 @@
 <template>
-  <nav class=" py-2">
+  <nav class="py-2">
     <div class="flex justify-between mx-auto w-8/12 h-full">
       <div class="search flex">
         <input type="search">
@@ -13,23 +13,23 @@
       </div>
       <div class="right-side flex gap-x-5">
         <div class="add h-full">
-          <button class="flex justify-center items-center" @click="modalToggle(true, 'TaskEdit')">
+          <button class="flex justify-center items-center" @click="$router.push({name: 'login'})">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
             </svg>
           </button>
         </div>
-        <div class="user h-full">
-          <button class="frame h-full" @click="modalToggle(true, auth ? 'UserEdit' : 'UserLogin')">
-            <img :src="auth ? auth.profile_pic : require('@/assets/images/avatar.png')" alt="">
+        <div class="user h-full opacity-75">
+          <button class="frame h-full"
+                  @click="auth ? $router.push({name: 'useredit'}) : $router.push({name: 'login'})">
+            <img :src="auth ? auth.profile_pic : require('@/assets/images/avatar_siluete_bg.jpg')" alt="">
           </button>
         </div>
       </div>
     </div>
   </nav>
-  <PopupWindow :closeModal="()=>$emit('update:showModal', false)" :showModal="showModal"
-               :modalComponent="modalComponent" :auth="auth"/>
+  <PopupWindow v-if="showModal" :modalComponent="modalComponent" :auth="auth"/>
 </template>
 
 <script>
@@ -41,7 +41,6 @@ export default {
   props: {
     showModal: Boolean,
     modalComponent: String,
-    modalToggle: Function,
     auth: Object
   },
 }

@@ -1,24 +1,24 @@
 <template>
   <div class="content">
-    <TopNavbar v-model:showModal="showModal" :modalToggle="modalToggle" :modalComponent="modalComponent" :auth="auth"/>
-    <router-view :showModal="showModal" class="router-view" :class="{blur: showModal}" :auth="auth"/>
+    <TopNavbar
+        v-model:showModal="showModal"
+        :modalComponent="modalComponent"
+        :auth="auth"/>
+    <HomeView :class="{blur: showModal}"
+              :showModal="showModal"
+              :auth="auth"/>
   </div>
 </template>
 
 <script>
 import TopNavbar from "@/components/nav/TopNavbar.vue";
+import HomeView from "@/views/TasksWrapper.vue";
 
 export default {
   data() {
     return {
       showModal: false,
       modalComponent: ''
-    }
-  },
-  methods: {
-    modalToggle(showModal, component) {
-      this.showModal = showModal
-      this.modalComponent = component
     }
   },
   created() {
@@ -31,7 +31,18 @@ export default {
       return this.$store.getters.getAuth
     }
   },
+  watch: {
+    $route(to) {
+      if (['taskedit', 'login', 'useredit', 'userview'].includes(to.name)) {
+        this.showModal = true
+        this.modalComponent = to.name
+      } else {
+        this.showModal = false
+      }
+    },
+  },
   components: {
+    HomeView,
     TopNavbar
   }
 }
@@ -46,10 +57,6 @@ export default {
     background-image: url("@/assets/images/bg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
-
-    .router-view {
-      transition: 1s;
-    }
   }
 }
 </style>

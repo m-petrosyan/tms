@@ -11,7 +11,7 @@ export default {
         getUser: state => state.user,
         getUsers: state => state.users,
         getAuth: state => state.auth,
-        getError: state => state.error
+        getUserError: state => state.error
     },
     mutations: {
         setToken(state, data) {
@@ -48,9 +48,14 @@ export default {
                 .then(response => commit("setAuth", response.data))
                 .catch(error => Promise.reject(error));
         },
+        getUser({commit}, id) {
+            return getRequest(`/user/${id}`, '', commit)
+                .then(response => commit("setUser", response.data))
+                .catch(error => Promise.reject(error));
+        },
         getUsers({commit}, data) {
             return getRequest('/user', data, commit)
-                .then(response => commit("setUsers", response))
+                .then(response => commit("setUser", response))
                 .catch(error => Promise.reject(error));
         },
     },

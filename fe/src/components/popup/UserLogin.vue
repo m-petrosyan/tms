@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     getError() {
-      return this.$store.getters.getError
+      return this.$store.getters.getUserError
     }
   },
   validations() {
