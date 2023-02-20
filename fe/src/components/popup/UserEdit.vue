@@ -1,6 +1,6 @@
 <template>
-  <div class="user-content">
-    <button class="log-out" @click="logout">
+  <div class="user-content" v-if="form">
+    <button class="log-out" @click="logout" v-if="edit">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
            class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round"
@@ -8,53 +8,65 @@
       </svg>
     </button>
     <div class="w-3/6 form mx-auto">
-      <label class="user-avatar">
-        <label class="block avatar pointer mx-auto" for="cover"
+      <label class="user-avatar" :class="{'cursor-pointer' : edit}">
+        <label class="block avatar mx-auto" for="cover"
                :style="{backgroundImage : `url(${!preview ? image: preview })`}"/>
-        <input type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
+        <input v-if="edit" type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
       </label>
-      <div class="form mb-5">
-        <div class="mt-10">
-          <input type="text" v-model="form.full_name" class="block mx-auto" placeholder="full name" autocomplete="off"
+      <div class="form-content" v-if="edit">
+        <div class="input-group">
+          <input v-if="edit" type="text" v-model="form.full_name" class="block mx-auto" placeholder="full name"
+                 autocomplete="off"
                  :disabled="loading">
         </div>
-        <div class="mt-10">
-          <input type="email" v-model="form.email" class="block mx-auto" placeholder="email" autocomplete="off"
+        <div class="input-group">
+          <input v-if="edit" type="email" v-model="form.email" class="block mx-auto" placeholder="email"
+                 autocomplete="off"
                  :disabled="loading">
         </div>
-        <div class="mt-10">
+        <div class="input-group">
           <input type="password" v-model="form.password" class="block mx-auto" placeholder="password" autocomplete="off"
                  :disabled="loading">
         </div>
-        <div class="mt-10">
+        <div class="input-group">
           <input type="password" v-model="form.repassword" class="block mx-auto" placeholder="re-password"
                  autocomplete="off"
                  :disabled="loading">
         </div>
-        <div class="mt-10">
+        <div class="input-group">
           <button class="block mx-auto save" @click="$emit('update:loading', true)" :disabled="loading">Save</button>
+        </div>
+      </div>
+      <div class="form-content" v-else>
+        <div class="input-group">
+          <p>{{ form.full_name }}</p>
+        </div>
+        <div class="input-group">
+          <p>{{ form.email }}</p>
         </div>
       </div>
     </div>
   </div>
+  <PreloaderElement class="triple-spinner" v-else-if="!form || loading"/>
 </template>
 
 <script>
 import useVuelidate from "@vuelidate/core";
 import {email, minLength, required, sameAs} from "@vuelidate/validators";
+import PreloaderElement from "@/components/elements/Preloader.vue";
 
 export default {
   name: "UserEdit",
+  components: {PreloaderElement},
   data() {
     return {
-      image: require('@/assets/images/avatar.png'),
-      preview: this.auth ? this.auth.profile_pic : this.image,
-      form: {
-        full_name: this.auth.full_name,
-        email: this.auth.email,
-        password: ''
-      }
+      image: require('@/assets/images/avatar_silhouette.png'),
+      preview: null,
+      edit: !this.$route.params.id,
     }
+  },
+  mounted() {
+    !this.edit ? this.$store.dispatch('getUser', this.$route.params.id).then(() => this.$emit('update:loading', false)) : this.$store.dispatch('auth').then(() => this.$emit('update:loading', false))
   },
   props: {
     loading: Boolean,
@@ -67,7 +79,7 @@ export default {
     },
     logout() {
       sessionStorage.clear();
-      this.$router.go(0)
+      this.$router.push({name: 'home'}).then(() => this.$router.go(0))
     }
   },
   validations() {
@@ -78,6 +90,19 @@ export default {
         password: {required, minLength: minLength(8)},
         repassword: {required, minLength: minLength(8), sameAs: sameAs(this.password)}
       }
+    }
+  },
+  beforeMount() {
+    this.$emit('update:loading', true)
+  },
+  computed: {
+    form() {
+      return this.edit ? this.$store.getters.getAuth : this.$store.getters.getUser
+    }
+  },
+  watch: {
+    form() {
+      this.image = this.form.profile_pic
     }
   },
   setup() {
@@ -102,7 +127,6 @@ export default {
   .form {
     .user-avatar {
       position: relative;
-      cursor: pointer;
 
       &:before {
         content: '';
@@ -123,12 +147,18 @@ export default {
       }
     }
 
-    .form {
-      input {
-        text-align: center;
+    .form-content {
+      margin-bottom: 20px;
 
-        &::placeholder {
+      .input-group {
+        margin-top: 40px;
+
+        input, p {
           text-align: center;
+
+          &::placeholder {
+            text-align: center;
+          }
         }
       }
     }

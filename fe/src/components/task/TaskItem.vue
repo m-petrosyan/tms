@@ -4,17 +4,16 @@
     <div class="list-content" tag="transition-group" :component-data="{name:'fade'}">
       <vuedraggable
           :disabled="disable"
-          :move="checkMove"
+          :move="move"
           :list="task.data"
           class="list-group"
           group="tasks"
-          @change="log"
-          @start="change"
-          @click="aa"
+          @change="update"
+          @start="start"
           itemKey="name"
       >
         <template #item="{ element }">
-          <div class="item">
+          <div class="item" :class="{'opacity-75' : access(element) && auth}" @click.prevent="viewTask(element.id)">
             <div class="item-img">
               <img class="img" :src="element.img" alt="">
             </div>
@@ -37,13 +36,10 @@
                       <path stroke-linecap="round" stroke-linejoin="round"
                             d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <p class=" ">{{ element.created_at }}</p>
+                    <p>{{ element.created_at }}</p>
                   </div>
                 </div>
-                <div class="users flex gap-x-2">
-                  <div class="user" :style="{backgroundImage : `url(${require('@/assets/images/avatar.png')})`}"/>
-                  <div class="user" :style="{backgroundImage : `url(${require('@/assets/images/avatar2.jpg')})`}"/>
-                </div>
+                <UsersInfo :users="element" :viewUser="viewUser"/>
               </div>
             </div>
           </div>
@@ -56,6 +52,7 @@
 
 <script>
 import vuedraggable from "vuedraggable/src/vuedraggable";
+import UsersInfo from "@/components/elements/UsersInfo.vue";
 
 export default {
   name: "TaskItem",
@@ -65,6 +62,7 @@ export default {
     }
   },
   components: {
+    UsersInfo,
     vuedraggable,
   },
   props: {
@@ -75,24 +73,33 @@ export default {
     updateTask: Function
   },
   methods: {
-    aa() {
-      // alert()
+    access(el) {
+      return ![el.created_by.id, el.assigned_to.id].includes(this.auth.id)
     },
-    change() {
-      // alert()
+    viewTask(id) {
+      this.$router.push({name: 'taskedit', params: {id: id}})
     },
-    checkMove(e) {
-      console.log(e)
+    viewUser(id) {
+      this.$router.push({name: 'userview', params: {id: id}})
+    },
+    start() {
+      console.log('start')
+    },
+    move(e) {
       this.$emit('update:status', e.relatedContext.element.status)
     },
-    log(e) {
-      console.log(e)
+    update(e) {
       const action = e.moved ? 'moved' : 'added';
       this.updateTask({
         data: {index: e[action].newIndex},
         id: e[action].element.id,
         to: e[action].element.assigned_to.id
-      }).catch(() => alert())
+      }, {
+        id: e[action].element.id,
+        index: e[action].element.index,
+        newIndex: e[action].newIndex,
+        status: e[action].element.status
+      })
     },
   },
   computed: {
@@ -104,6 +111,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .task-content {
   border-radius: 5px;
   background-color: #ebecef;
@@ -121,6 +129,7 @@ export default {
     height: 500px;
     max-height: 600px;
     overflow: auto;
+    overflow-x: hidden;
     padding: 0 4px;
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
@@ -154,7 +163,6 @@ export default {
         cursor: pointer;
         background: white;
         border-radius: 10px;
-        overflow: hidden;
         margin-bottom: 15px;
 
         &:active {
@@ -162,6 +170,9 @@ export default {
         }
 
         .item-img {
+          overflow: hidden;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
           width: 100%;
         }
 
