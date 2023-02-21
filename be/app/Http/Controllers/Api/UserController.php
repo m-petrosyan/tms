@@ -42,6 +42,14 @@ class UserController extends Controller
     }
 
     /**
+     * @return UserResource
+     */
+    public function auth(): UserResource
+    {
+        return new UserResource(auth()->user());
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  User  $user
