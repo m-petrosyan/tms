@@ -4,6 +4,7 @@ namespace App\Http\Resources\Task;
 
 use App\Helpers\General;
 use App\Http\Resources\User\UserResource;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,7 +29,7 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'created_by' => new UserResource($this->owner),
             'assigned_to' => new UserResource($this->assigned),
-            'created_at' => $this->created_at,
+            'created_at' => Carbon::parse($this->created_at, 'UTC')->isoFormat('MMM D'),
         ];
     }
 }
