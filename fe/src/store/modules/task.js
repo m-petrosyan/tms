@@ -4,12 +4,12 @@ export default {
     state: {
         task: null,
         tasks: null,
-        error: null
+        taskError: null
     },
     getters: {
         getTask: state => state.task,
         getTasks: state => state.tasks,
-        getTaskError: state => state.error
+        getTaskError: state => state.taskError
     },
     mutations: {
         setTask(state, data) {
@@ -18,8 +18,8 @@ export default {
         setTasks(state, data) {
             state.tasks = data
         },
-        setError(state, data) {
-            state.error = data
+        setTaskError(state, data) {
+            state.taskError = data
         },
         rollbackTask(state, data) {
             state.tasks.data[data.status].data.push(state.tasks.data[data.newStatus].data.find(item => item.id === data.id))
@@ -28,19 +28,19 @@ export default {
     },
     actions: {
         getTasks({commit}, data) {
-            return getRequest('/task', data, commit)
+            return getRequest('/task', data)
                 .then(response => commit("setTasks", response))
                 .catch(error => Promise.reject(error));
         },
         getTask({commit}, data) {
-            return getRequest(`/task/${data}`, '', commit)
+            return getRequest(`/task/${data}`, '')
                 .then(response => commit("setTask", response.data))
                 .catch(error => Promise.reject(error));
         },
         updateTask({commit}, {data, id, to}) {
-            return putRequest(`/task/${id}/${to}`, {...data}, commit)
+            return putRequest(`/task/${id}/${to}`, {...data})
                 .catch(error => {
-                    commit("setError", error.message)
+                    commit("setTaskError", error.message)
                     return Promise.reject(error)
                 });
         },

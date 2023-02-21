@@ -13,6 +13,7 @@
                :style="{backgroundImage : `url(${!preview ? image: preview })`}"/>
         <input v-if="edit" type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
       </label>
+      <ErrorMessages :error="v$" :serverError="error"/>
       <div class="form-content" v-if="edit">
         <div class="input-group">
           <input v-if="edit" type="text" v-model="form.full_name" class="block mx-auto" placeholder="full name"
@@ -34,7 +35,7 @@
                  :disabled="loading">
         </div>
         <div class="input-group">
-          <button class="block mx-auto save" @click="$emit('update:loading', true)" :disabled="loading">Save</button>
+          <button class="block mx-auto save" @click="save" :disabled="loading">Save</button>
         </div>
       </div>
       <div class="form-content" v-else>
@@ -53,29 +54,39 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import {email, minLength, required, sameAs} from "@vuelidate/validators";
-import PreloaderElement from "@/components/elements/Preloader.vue";
+import updateQueryMixin from "@/mixins/updateQueryMixin";
 
 export default {
   name: "UserEdit",
-  components: {PreloaderElement},
+  mixins: [updateQueryMixin],
   data() {
     return {
       image: require('@/assets/images/avatar_silhouette.png'),
       preview: null,
       edit: !this.$route.params.id,
+      profile_pic: null,
+      actions: {
+        post: 'updateUser',
+        error: 'getUserError'
+      }
     }
   },
   mounted() {
     !this.edit ? this.$store.dispatch('getUser', this.$route.params.id).then(() => this.$emit('update:loading', false)) : this.$store.dispatch('auth').then(() => this.$emit('update:loading', false))
   },
-  props: {
-    loading: Boolean,
-    auth: Object
-  },
   methods: {
     uploadCover(file) {
       this.preview = URL.createObjectURL(file.target.files[0])
-      this.image = file.target.files[0]
+      this.image = this.profile_pic = file.target.files[0]
+    },
+    save() {
+      this.submit().then(() => {
+        if (this.profile_pic) {
+          const formData = new FormData
+          formData.append('profile_pic', this.profile_pic)
+          this.$store.dispatch('updateUserImg', formData)
+        }
+      })
     },
     logout() {
       sessionStorage.clear();
@@ -88,7 +99,7 @@ export default {
         full_name: {required, minLength: minLength(2)},
         email: {required, minLength: minLength(8), email},
         password: {required, minLength: minLength(8)},
-        repassword: {required, minLength: minLength(8), sameAs: sameAs(this.password)}
+        repassword: {required, minLength: minLength(8), sameAs: sameAs(this.form?.password)}
       }
     }
   },

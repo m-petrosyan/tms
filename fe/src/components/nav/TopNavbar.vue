@@ -1,8 +1,13 @@
 <template>
   <nav class="py-2">
     <div class="flex justify-between mx-auto w-8/12 h-full">
+      <div class="logo">
+        <router-link to="/">
+          <img :src="require('@/assets/images/logo.png')" alt="">
+        </router-link>
+      </div>
       <div class="search flex">
-        <input type="search">
+        <input type="search" v-model="search">
         <button class="px-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
@@ -11,7 +16,7 @@
           </svg>
         </button>
       </div>
-      <div class="right-side flex gap-x-5">
+      <div class="actions flex gap-x-5">
         <div class="add h-full">
           <button class="flex justify-center items-center" @click="$router.push({name: 'login'})">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -37,6 +42,11 @@ import PopupWindow from "@/components/popup/PopupWindow.vue";
 
 export default {
   name: "TopNavbar",
+  data() {
+    return {
+      search: ''
+    }
+  },
   components: {PopupWindow},
   props: {
     showModal: Boolean,
@@ -79,7 +89,7 @@ nav {
     }
   }
 
-  .right-side {
+  .actions {
     .add {
       button {
         background-color: #ffffff73;

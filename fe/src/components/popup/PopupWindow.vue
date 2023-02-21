@@ -63,7 +63,7 @@ export default {
 <style scoped lang="scss">
 .modal {
   position: fixed;
-  z-index: 999;
+  z-index: 5;
   top: 50px;
   left: 0;
   width: 100%;
@@ -72,7 +72,7 @@ export default {
 
   .modal-content {
     border-radius: 5px;
-    margin: 150px auto;
+    margin: 100px auto;
     background-color: white;
     min-height: 200px;
     width: 500px;
