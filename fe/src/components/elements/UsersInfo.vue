@@ -14,7 +14,11 @@ export default {
   name: "UsersInfo",
   props: {
     users: Object,
-    viewUser: Function
+  },
+  methods: {
+    viewUser(id) {
+      this.$router.push({name: 'userview', params: {id: id}})
+    },
   }
 }
 </script>
@@ -22,6 +26,7 @@ export default {
 <style scoped lang="scss">
 .users {
   .user {
+    cursor: pointer;
     height: 40px;
     width: 40px;
     background-size: contain;

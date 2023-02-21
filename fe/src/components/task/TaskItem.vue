@@ -39,7 +39,7 @@
                     <p>{{ element.created_at }}</p>
                   </div>
                 </div>
-                <UsersInfo :users="element" :viewUser="viewUser"/>
+                <UsersInfo :users="element"/>
               </div>
             </div>
           </div>
@@ -78,9 +78,6 @@ export default {
     },
     viewTask(id) {
       this.$router.push({name: 'taskedit', params: {id: id}})
-    },
-    viewUser(id) {
-      this.$router.push({name: 'userview', params: {id: id}})
     },
     start() {
       console.log('start')

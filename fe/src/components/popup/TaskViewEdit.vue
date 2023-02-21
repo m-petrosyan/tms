@@ -28,7 +28,7 @@
         </svg>
         <p>{{ task.created_at }}</p>
       </div>
-      <UsersInfo :users="task"/>
+      <UsersInfo :users="task" :viewUser="viewUser"/>
     </div>
   </div>
 </template>
