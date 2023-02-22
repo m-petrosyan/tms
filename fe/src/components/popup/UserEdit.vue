@@ -10,7 +10,7 @@
     <div class="w-3/6 form mx-auto">
       <label class="user-avatar" :class="{'cursor-pointer' : edit}">
         <label class="block avatar mx-auto" for="cover"
-               :style="{backgroundImage : `url(${!preview ? image: preview })`}"/>
+               :style="{backgroundImage : `url(${!preview ? defaultImg: preview })`}"/>
         <input v-if="edit" type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
       </label>
       <ErrorMessages :error="v$" :serverError="error"/>
@@ -61,7 +61,7 @@ export default {
   mixins: [updateQueryMixin],
   data() {
     return {
-      image: require('@/assets/images/avatar_silhouette.png'),
+      defaultImg: require('@/assets/images/avatar_silhouette.png'),
       preview: null,
       edit: !this.$route.params.id,
       profile_pic: null,
@@ -77,16 +77,13 @@ export default {
   methods: {
     uploadCover(file) {
       this.preview = URL.createObjectURL(file.target.files[0])
-      this.image = this.profile_pic = file.target.files[0]
+      this.profile_pic = file.target.files[0]
+      const formData = new FormData
+      formData.append('profile_pic', this.profile_pic)
+      this.$store.dispatch('updateUserImg', formData).then(() => this.$store.commit('setUserImg', this.preview))
     },
     save() {
-      this.submit().then(() => {
-        if (this.profile_pic) {
-          const formData = new FormData
-          formData.append('profile_pic', this.profile_pic)
-          this.$store.dispatch('updateUserImg', formData)
-        }
-      })
+      this.submit()
     },
     logout() {
       sessionStorage.clear();

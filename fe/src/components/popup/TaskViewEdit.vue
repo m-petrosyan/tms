@@ -1,19 +1,25 @@
 <template>
-  <div class="task" v-if="task">
-    <div class="cover rounded-t"
-         :style="{backgroundImage : `url(${task.img ? task.img : require('@/assets/images/noimage.jpg')})`}"/>
+  <div class="task" v-if="form">
+    <div v-if="!edit" class="cover rounded-t"
+         :style="{backgroundImage : `url(${form.img ? form.img : defaultImg})`}"/>
+    <label v-else>
+      <label class="block cover rounded-t mx-auto" for="cover" :class="{'cursor-pointer' : edit}"
+             :style="{backgroundImage : `url(${!preview ? form.img ?? defaultImg: preview })`}"/>
+      <input v-if="edit" type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
+    </label>
     <div class="info">
-      <div class="title flex justify-between gap-x-2 my-5">
-        <div class="flex gap-x-2 ">
+      <div class="item title flex justify-between gap-x-2 my-5">
+        <div class="flex gap-x-2 w-full">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor"
                class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
                   d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9"/>
           </svg>
-          <h3>{{ task.title }}</h3>
+          <h3 v-if="!edit">{{ form.title }}</h3>
+          <input v-else type="text" placeholder="title" v-model="form.title">
         </div>
-        <button class="edit">
+        <button class="edit" v-if="auth ? form.created_by.id === auth.id && !edit : false" @click="() => edit=true">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -21,44 +27,58 @@
           </svg>
         </button>
       </div>
-      <div class="description flex gap-x-2 my-5">
+      <div class="item description flex gap-x-2 my-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
              stroke="currentColor" class="icon w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round"
                 d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/>
         </svg>
-        <p>{{ task.description }}</p>
+        <p v-if="!edit">{{ form.description }}</p>
+        <div v-else>
+          <textarea v-model="form.description" rows="5"/>
+          <div class="input-group">
+            <button class="block mx-auto save" @click="save" :disabled="loading">Save</button>
+          </div>
+        </div>
       </div>
-      <div class="created flex gap-x-2 my-5">
+      <div v-if="!edit" class="created flex gap-x-2 my-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
              stroke="currentColor" class="icon w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round"
                 d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <p>{{ task.created_at }}</p>
+        <p>{{ form.created_at }}</p>
       </div>
-      <UsersInfo :users="task"/>
+      <UsersInfo v-if="!edit" :users="form"/>
     </div>
   </div>
 </template>
 
 <script>
 import UsersInfo from "@/components/elements/UsersInfo.vue";
+import updateQueryMixin from "@/mixins/updateQueryMixin";
 
 export default {
   name: "TaskViewEdit",
-  props: {
-    loading: Function
+  mixins: [updateQueryMixin],
+  data() {
+    return {
+      edit: false,
+      defaultImg: require('@/assets/images/noimage.jpg'),
+      image: null,
+      preview: null,
+      actions: {
+        get: 'getTask'
+      }
+    }
   },
-  beforeMount() {
-    this.$emit('update:loading', true)
-  },
-  mounted() {
-    this.$store.dispatch('getTask', this.$route.params.id).finally(() => this.$emit('update:loading', false))
-  },
-  computed: {
-    task() {
-      return this.$store.getters.getTask
+  methods: {
+    uploadCover(file) {
+      this.preview = URL.createObjectURL(file.target.files[0])
+      this.image = file.target.files[0]
+    },
+    save() {
+
     }
   },
   components: {UsersInfo},
@@ -77,14 +97,21 @@ export default {
   .info {
     padding: 20px;
 
-    .edit {
-      svg {
-        opacity: .3;
-        transition: all .5s;
+    .item {
+      input, textarea {
+        width: 100%;
+        outline: 1px solid #607d8b;
+      }
 
-        &:hover {
-          opacity: 1;
-          color: #f44336;
+      .edit {
+        svg {
+          opacity: .3;
+          transition: all .5s;
+
+          &:hover {
+            opacity: 1;
+            color: #f44336;
+          }
         }
       }
     }
