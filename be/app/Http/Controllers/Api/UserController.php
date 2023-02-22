@@ -68,7 +68,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request): Response
     {
-        $this->userService->update($request->validated());
+        $this->userService->update(array_filter($request->validated()));
 
         return response()->noContent();
     }

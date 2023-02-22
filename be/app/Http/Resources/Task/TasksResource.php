@@ -19,8 +19,13 @@ class TasksResource extends JsonResource
     public function toArray($request): array|JsonSerializable|Arrayable
     {
         return [
-            'title' => $this->status,
-            'data' => new TaskCollection(Task::where('status', $this->status)->orderBy('index','asc')->get())
+            'status' => $this->resource,
+            'data' => new TaskCollection(
+                Task::where('status', $this->resource)->where('title', 'LIKE', "%$request->search%")->orderBy(
+                    'index',
+                    'asc'
+                )->get()
+            ),
         ];
     }
 }
