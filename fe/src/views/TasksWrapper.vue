@@ -7,7 +7,6 @@
                 :task="item"
                 :title="titles[index]"
                 :updateTask="updateTask"
-                v-model:status="newStatus"
                 :auth="auth"
                 :modalToggle="modalToggle"/>
     </div>
@@ -25,7 +24,6 @@ export default {
   data() {
     return {
       closeAlert: false,
-      newStatus: null,
       titles: ['to do', 'doing', 'code review', 'done'],
       actions: {
         get: 'getTasks',
@@ -34,7 +32,6 @@ export default {
     }
   },
   props: {
-
     modalToggle: Function
   },
   watch: {
@@ -47,11 +44,11 @@ export default {
   methods: {
     updateTask(data, oldData) {
       return this.$store.dispatch('updateTask', {
-        data: {index: data.data.index, status: this.newStatus},
+        data: {index: data.data.index, status: data.status},
         id: data.id,
-        to: data.to
+        to: data.to,
       }).catch(() => {
-        this.$store.commit('rollbackTask', {...oldData, newStatus: this.newStatus})
+        this.$store.commit('rollbackTask', {...oldData})
         return Promise.reject()
       })
     }
