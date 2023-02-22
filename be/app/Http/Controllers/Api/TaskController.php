@@ -8,11 +8,10 @@ use App\Http\Requests\Task\TaskCreateRequest;
 use App\Http\Requests\Task\TaskImgUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Resources\Task\TaskResource;
-use App\Http\Resources\task\TasksCollection;
+use App\Http\Resources\Task\TasksStatusCollection;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\TaskService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TaskController extends Controller
@@ -27,12 +26,11 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
-     * @return TasksCollection
+     * @return TasksStatusCollection
      */
-    public function index(Request $request): TasksCollection
+    public function index(): TasksStatusCollection
     {
-        return new TasksCollection(StatusEnum::getValues());
+        return new TasksStatusCollection(StatusEnum::getValues());
     }
 
     /**
