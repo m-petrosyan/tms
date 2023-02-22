@@ -7,13 +7,19 @@
         </router-link>
       </div>
       <div class="search">
-        <input type="text" v-model="search" v-debounce:800ms="searchTask">
+        <input type="text" v-model="search">
         <div class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          <svg v-if="!search" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
                   d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
           </svg>
+          <button v-else @click="search = ''">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
         </div>
       </div>
       <div class="actions flex gap-x-5">
@@ -39,6 +45,7 @@
 
 <script>
 import PopupWindow from "@/components/popup/PopupWindow.vue";
+import {debounce} from 'vue-debounce'
 
 export default {
   name: "TopNavbar",
@@ -49,7 +56,17 @@ export default {
   },
   methods: {
     searchTask() {
-      this.$store.dispatch('getTasks', {search: this.search})
+
+    }
+  },
+  created() {
+    this.debouncedFetch = debounce((newValue) => {
+      this.$store.dispatch('getTasks', {search: newValue})
+    }, 1000);
+  },
+  watch: {
+    search(newValue) {
+      this.debouncedFetch(newValue)
     }
   },
   components: {PopupWindow},

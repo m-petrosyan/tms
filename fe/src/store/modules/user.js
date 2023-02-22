@@ -26,6 +26,9 @@ export default {
         setUser(state, data) {
             state.user = data
         },
+        setUserImg(state, data) {
+            state.auth.profile_pic = data
+        },
         setUsers(state, data) {
             state.users = data
         },
