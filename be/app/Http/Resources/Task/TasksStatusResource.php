@@ -2,13 +2,13 @@
 
 namespace App\Http\Resources\Task;
 
-use App\Models\Task;
+use App\Repositories\TaskRepository;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use JsonSerializable;
 
-class TasksResource extends JsonResource
+class TasksStatusResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,12 +20,7 @@ class TasksResource extends JsonResource
     {
         return [
             'status' => $this->resource,
-            'data' => new TaskCollection(
-                Task::where('status', $this->resource)->where('title', 'LIKE', "%$request->search%")->orderBy(
-                    'index',
-                    'asc'
-                )->get()
-            ),
+            'data' => new TaskCollection(TaskRepository::getTasks($this->resource, $request->search)),
         ];
     }
 }
