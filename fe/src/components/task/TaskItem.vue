@@ -1,19 +1,19 @@
 <template>
-  <div class="task-content w-3/12">
+  <div class="task-content w-3/12" :status="task.title">
     <h3 class="title">{{ title }}</h3>
     <div class="list-content" tag="transition-group" :component-data="{name:'fade'}">
       <vuedraggable
+          :status="task.status"
           :disabled="disable"
-          :move="move"
           :list="task.data"
           class="list-group"
           group="tasks"
           @change="update"
-          @start="start"
+          @end="end"
           itemKey="name"
       >
         <template #item="{ element }">
-          <div class="item" :class="{'opacity-75' : auth && access(element)}" @click.prevent="viewTask(element.id)">
+          <div class="item" :class="{'disabled' : auth && access(element)}" @click.prevent="viewTask(element.id)">
             <div class="item-img">
               <img class="img" :src="element.img" alt="">
             </div>
@@ -56,11 +56,6 @@ import UsersInfo from "@/components/elements/UsersInfo.vue";
 
 export default {
   name: "TaskItem",
-  data() {
-    return {
-      newStatus: null,
-    }
-  },
   components: {
     UsersInfo,
     vuedraggable,
@@ -69,7 +64,6 @@ export default {
     auth: Object,
     task: Object,
     title: String,
-    status: Number,
     updateTask: Function
   },
   methods: {
@@ -79,23 +73,18 @@ export default {
     viewTask(id) {
       this.$router.push({name: 'taskedit', params: {id: id}})
     },
-    start() {
-      console.log('start')
-    },
-    move(e) {
-      this.$emit('update:status', e.relatedContext.element.status)
-    },
-    update(e) {
-      const action = e.moved ? 'moved' : 'added';
+    end(e) {
       this.updateTask({
-        data: {index: e[action].newIndex},
-        id: e[action].element.id,
-        to: e[action].element.assigned_to.id
+        data: {index: e.newIndex},
+        id: e.from.__draggable_component__.context.element.id,
+        to: e.from.__draggable_component__.context.element.assigned_to.id,
+        status: e.to.__vueParentComponent.attrs.status
       }, {
-        id: e[action].element.id,
-        index: e[action].element.index,
-        newIndex: e[action].newIndex,
-        status: e[action].element.status
+        id: e.from.__draggable_component__.context.element.id,
+        index: e.oldIndex,
+        newIndex: e.newIndex,
+        status: e.from.__draggable_component__.context.element.status,
+        newStatus: e.to.__vueParentComponent.attrs.status
       })
     },
   },
@@ -161,6 +150,15 @@ export default {
         background: white;
         border-radius: 10px;
         margin-bottom: 15px;
+
+        &.disabled {
+          background-color: #f44336;
+          border-radius: 5px;
+
+          .item-info {
+            color: white;
+          }
+        }
 
         &:active {
           cursor: grabbing;

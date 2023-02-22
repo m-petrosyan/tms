@@ -53,7 +53,7 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import {email, minLength, required, sameAs} from "@vuelidate/validators";
+import {email, minLength, requiredIf, sameAs} from "@vuelidate/validators";
 import updateQueryMixin from "@/mixins/updateQueryMixin";
 
 export default {
@@ -96,10 +96,16 @@ export default {
   validations() {
     return {
       form: {
-        full_name: {required, minLength: minLength(2)},
-        email: {required, minLength: minLength(8), email},
-        password: {required, minLength: minLength(8)},
-        repassword: {required, minLength: minLength(8), sameAs: sameAs(this.form?.password)}
+        full_name: {minLength: minLength(2)},
+        email: {minLength: minLength(8), email},
+        password: {minLength: minLength(8)},
+        repassword: {
+          required: requiredIf(function () {
+            return this.form.password
+          }),
+          minLength: minLength(8),
+          sameAs: sameAs(this.form?.password)
+        }
       }
     }
   },
@@ -113,6 +119,7 @@ export default {
   },
   watch: {
     form() {
+      this.form.repassword = ""
       this.image = this.form.profile_pic
     }
   },
