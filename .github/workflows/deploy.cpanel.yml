@@ -1,5 +1,5 @@
 on: push
-name: 🚀 Deploy website on push
+name: 🤘 Deploy website on push
 jobs:
   web-deploy:
     name: 🎉 Deploy
@@ -15,6 +15,7 @@ jobs:
 
       - name: 🔨 Build Project
         run: |
+          cd fe
           pwd
           yarn
           yarn build
