@@ -6,9 +6,25 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: 🪅 Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: 🔨 Build Project
+        run: |
+          cd fe
+          pwd
+          yarn
+          yarn build
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{secrets.FTP_SERVER}}
           username: ${{secrets.FTP_USERNAME}}
           password: ${{secrets.FTP_PASSWORD}}
+          server-dir: /tms/fe/
