@@ -15,7 +15,7 @@ jobs:
 
       - name: 🔨 Build Project
         run: |
-          cd ../fe
+          cd fe
           pwd
           yarn
           yarn build
