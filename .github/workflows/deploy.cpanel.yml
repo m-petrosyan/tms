@@ -8,6 +8,7 @@ jobs:
       - name: 🚚 Get latest code
         run: |
           cd fe
+
         uses: actions/checkout@v3
 
       - name: Use Node.js 16
