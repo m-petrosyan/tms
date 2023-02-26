@@ -22,7 +22,6 @@ jobs:
           yarn build
           cd ../be
           composer i
-          php artisan passport:install
           php artisan migrate --seed
           php artisan serve
 
