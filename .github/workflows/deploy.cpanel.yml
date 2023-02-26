@@ -20,6 +20,11 @@ jobs:
           pwd
           yarn
           yarn build
+          cd ../be
+          composer i
+          php artisan passport:install
+          php artisan migrate --seed
+          php artisan serve
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
