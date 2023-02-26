@@ -20,7 +20,7 @@ export default {
     },
     watch: {
         $route(to) {
-            if (['taskedit', 'login', 'useredit', 'userview'].includes(to.name)) {
+            if (['taskedit', 'auth', 'useredit', 'userview'].includes(to.name)) {
                 this.showModal = true
                 this.modalComponent = to.name
             } else {

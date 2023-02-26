@@ -24,7 +24,7 @@
 import useredit from "@/components/popup/UserEdit.vue";
 import userview from "@/components/popup/UserEdit.vue";
 import taskedit from "@/components/popup/TaskViewEdit.vue";
-import login from "@/components/popup/UserLogin.vue";
+import auth from "@/components/popup/AuthWindow.vue";
 import PreloaderElement from "@/components/elements/Preloader.vue";
 
 export default {
@@ -55,7 +55,7 @@ export default {
     useredit,
     userview,
     taskedit,
-    login
+    auth
   }
 }
 </script>

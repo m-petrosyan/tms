@@ -18,10 +18,11 @@ jobs:
           cd fe
           yarn
           yarn build
-          cd ../
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        run: |
+          cd ../
         with:
           server: ${{secrets.FTP_SERVER}}
           username: ${{secrets.FTP_USERNAME}}

@@ -1,6 +1,5 @@
 <template>
-  <div class="user-content px-10">
-    <h3 class="text-center">Login</h3>
+  <div class="user-content">
     <ErrorMessages :error="v$" :serverError="error"/>
     <div class="w-3/6 mx-auto">
       <div class="form mb-5">

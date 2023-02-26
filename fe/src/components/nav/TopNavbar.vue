@@ -33,7 +33,7 @@
         </div>
         <div class="user h-full opacity-75">
           <button class="frame h-full"
-                  @click="auth ? $router.push({name: 'useredit'}) : $router.push({name: 'login'})">
+                  @click="auth ? $router.push({name: 'useredit'}) : $router.push({name: 'auth'})">
             <img :src="auth ? auth.profile_pic : require('@/assets/images/avatar_siluete_bg.jpg')" alt="">
           </button>
         </div>
@@ -52,11 +52,6 @@ export default {
   data() {
     return {
       search: ''
-    }
-  },
-  methods: {
-    searchTask() {
-
     }
   },
   created() {
@@ -95,6 +90,7 @@ nav {
       padding-right: 0;
       padding-left: 5px;
       transition: 1s;
+      color: #795548;
 
       &:focus {
         outline: white;

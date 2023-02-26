@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/TasksWrapper.vue'
 import TaskViewEdit from "@/components/popup/TaskViewEdit.vue";
-import UserLogin from "@/components/popup/UserLogin.vue";
 import UserEdit from "@/components/popup/UserEdit.vue";
+import AuthWindow from "@/components/popup/AuthWindow.vue";
 
 const routes = [
     {
@@ -11,9 +11,9 @@ const routes = [
         component: HomeView
     },
     {
-        path: '/login',
-        name: 'login',
-        component: UserLogin
+        path: '/auth',
+        name: 'auth',
+        component: AuthWindow
     },
     {
         path: '/user',
