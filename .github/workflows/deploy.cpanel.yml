@@ -14,8 +14,8 @@ jobs:
           node-version: '16'
 
       - name: 🔨 Build Project
-        server-dir: /tms/fe/
         run: |
+          cd ./fe
           pwd
           yarn
           yarn build
