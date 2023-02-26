@@ -15,6 +15,7 @@ jobs:
 
       - name: 🔨 Build Project
         run: |
+          cd fe
           npm install
           npm run build
 
