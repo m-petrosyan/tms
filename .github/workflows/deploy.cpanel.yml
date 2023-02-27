@@ -23,6 +23,7 @@ jobs:
           cd ../be
           composer i
           php artisan migrate --seed
+          php artisan passport:install
           php artisan serve
 
       - name: 📂 Sync files
