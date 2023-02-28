@@ -4,7 +4,7 @@
 
 
 # TMS
-task management system
+Task management system
 
 
 Welcome to our task management website! Here's a guide on how to use platform:
@@ -38,8 +38,9 @@ Editing Your Own Tasks:
 You can only edit tasks that you have created. To edit a task, click on the task and make the necessary changes. If you need to assign the task to a different user, you can do so by adjusting the "Assignee" field.
 </li>
 </ol>
-Please note that only registered users can create and edit tasks.
+<strong>Please note that only registered users can create and edit tasks.</strong>
 
+<hr/>
 
 ### Postman documentation  
 [view](https://documenter.getpostman.com/view/12599375/2s93CKQErt/)
