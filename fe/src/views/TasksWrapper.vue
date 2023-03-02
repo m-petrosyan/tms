@@ -1,14 +1,13 @@
 <template>
   <div class="tasks-container">
     <LoginAlesrtMessages v-if="!auth && !closeAlert" v-model:closeAlert="closeAlert"/>
-    <ErrorMessages error="false" :serverError="error"/>
+    <ErrorMessages v-if="!showModal" error="false" :serverError="error" width="w-fit"/>
     <div v-if="form" class="wrapper flex w-8/12 m-auto justify-between gap-x-3 mt-16">
       <TaskItem v-for="(item, index) in form.data" :key="item.id"
                 :task="item"
                 :title="titles[index]"
                 :updateTask="updateTask"
-                :auth="auth"
-                :modalToggle="modalToggle"/>
+                :auth="auth"/>
     </div>
   </div>
 </template>
@@ -31,9 +30,6 @@ export default {
       }
     }
   },
-  props: {
-    modalToggle: Function
-  },
   watch: {
     error() {
       setTimeout(() => {
@@ -41,12 +37,15 @@ export default {
       }, 7000)
     }
   },
+  props: {
+    showModal: Boolean
+  },
   methods: {
     updateTask(data, oldData) {
       return this.$store.dispatch('updateTask', {
-        data: {index: data.data.index, status: data.status},
+        data: {index: data.data.index, status: data.status, _method: 'PUT'},
         id: data.id,
-        to: data.to,
+        param: data.to,
       }).catch(() => {
         this.$store.commit('rollbackTask', {...oldData})
         return Promise.reject()

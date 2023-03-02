@@ -24,18 +24,19 @@
 import useredit from "@/components/popup/UserEdit.vue";
 import userview from "@/components/popup/UserEdit.vue";
 import taskedit from "@/components/popup/TaskViewEdit.vue";
+import taskcreate from "@/components/popup/TaskViewEdit.vue";
 import auth from "@/components/popup/AuthWindow.vue";
 import PreloaderElement from "@/components/elements/Preloader.vue";
+import popupMixin from "@/mixins/popupMixin";
 
 export default {
   name: "PopupWindow",
+  mixins: [popupMixin],
   data() {
     return {
-      loading: false,
       comp: 'UserEdit'
     }
   },
-
   computed: {
     Component() {
       return this.modalComponent
@@ -45,16 +46,12 @@ export default {
     modalComponent: String,
     auth: Object
   },
-  methods: {
-    closeModal() {
-      this.$router.push({name: 'home'})
-    }
-  },
   components: {
     PreloaderElement,
     useredit,
     userview,
     taskedit,
+    taskcreate,
     auth
   }
 }
@@ -96,7 +93,8 @@ export default {
 
     ::v-deep(.component) {
       .form {
-        input {
+        input, textarea, select {
+          padding-left: 5px;
           border: 1px solid #d2d2d2;
           border-radius: 5px;
 
@@ -105,7 +103,7 @@ export default {
           }
         }
 
-        .save {
+        .submit {
           border: 1px solid #ff5722;
           color: #f44336;
           padding: 1px 20px;

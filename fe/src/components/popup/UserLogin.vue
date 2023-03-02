@@ -14,7 +14,7 @@
                  :disabled="loading">
         </div>
         <div class="mt-10">
-          <button class="block mx-auto save" @click="save" :disabled="loading">Login</button>
+          <button class="block mx-auto submit" @click="save" :disabled="loading">Login</button>
         </div>
       </div>
     </div>
@@ -25,10 +25,11 @@
 import useVuelidate from "@vuelidate/core";
 import {email, minLength, required} from "@vuelidate/validators";
 import updateQueryMixin from "@/mixins/updateQueryMixin";
+import popupItemMixin from "@/mixins/popupItemMixin";
 
 export default {
   name: "UserLogin",
-  mixins: [updateQueryMixin],
+  mixins: [popupItemMixin, updateQueryMixin],
   data() {
     return {
       form: {
@@ -41,15 +42,13 @@ export default {
       }
     }
   },
-  props: {
-    closeModal: Function
-  },
   methods: {
     save() {
       this.submit().then(() => {
+        this.$emit('loadingVal', true)
         this.$store.dispatch('auth').then(() => {
           this.closeModal()
-        })
+        }).finally(() => this.$emit('loadingVal', false))
       })
     }
   },

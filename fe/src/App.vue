@@ -4,17 +4,17 @@
         v-model:showModal="showModal"
         :modalComponent="modalComponent"
         :auth="auth"/>
-    <HomeView :class="{blur: showModal}"
-              :showModal="showModal"
-              :auth="auth"/>
+    <TasksWrapper :showModal="showModal" :class="{blur: showModal}"/>
   </div>
 </template>
 
 <script>
-import mainMixin from "@/mixins/mainMixin";
+import appMixin from "@/mixins/appMixin";
+import TasksWrapper from "@/views/TasksWrapper.vue";
 
 export default {
-  mixins: [mainMixin],
+  components: {TasksWrapper},
+  mixins: [appMixin],
 }
 </script>
 

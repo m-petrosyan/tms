@@ -24,7 +24,7 @@
       </div>
       <div class="actions flex gap-x-5">
         <div class="add h-full">
-          <button class="flex justify-center items-center" @click="$router.push({name: 'login'})">
+          <button class="flex justify-center items-center" @click="$router.push({name: auth ? 'taskcreate' : 'auth'})">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -33,7 +33,7 @@
         </div>
         <div class="user h-full opacity-75">
           <button class="frame h-full"
-                  @click="auth ? $router.push({name: 'useredit'}) : $router.push({name: 'auth'})">
+                  @click="$router.push({name: auth ? 'useredit' : 'auth'})">
             <img :src="auth ? auth.profile_pic : require('@/assets/images/avatar_siluete_bg.jpg')" alt="">
           </button>
         </div>
