@@ -13,7 +13,18 @@ class TaskService extends FileService
      */
     public function store(array $request, object $user): mixed
     {
-        return $user->taskAssigned()->create(Arr::only($request,['title','description','status'])+['assigned_to'=> $user->id,'index' => -1]);
+        $task = $user->taskAssigned()->create(
+            Arr::only($request, ['title', 'description', 'status']) + [
+                'assigned_to' => $user->id,
+                'index' => -1,
+            ]
+        );
+
+        if (isset($request['img'])) {
+            $this->updateImg($task, $request['img'], 'img', '/task');
+        }
+
+        return $task;
     }
 
     /**
@@ -24,6 +35,13 @@ class TaskService extends FileService
      */
     public function update(object $task, object $user, array $request): void
     {
-        $task->update(Arr::only($request,['title','description','status','index'])+['assigned_to'=> $user->id]);
+        if (isset($request['img'])) {
+            $this->updateImg($task, $request['img'], 'img', '/task');
+        }
+
+        $task->update(
+            Arr::only($request, ['title', 'description', 'status', 'index']) + ['assigned_to' => $user->id]
+        );
     }
+
 }

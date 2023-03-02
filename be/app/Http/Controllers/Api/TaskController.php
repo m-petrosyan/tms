@@ -72,18 +72,6 @@ class TaskController extends Controller
     }
 
     /**
-     * @param  TaskImgUpdateRequest  $request
-     * @param  Task  $task
-     * @return Response
-     */
-    public function updateImg(TaskImgUpdateRequest $request, Task $task): Response
-    {
-        $this->taskService->updateImg($task, $request->img, 'img', '/task');
-
-        return response()->noContent();
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  Task  $task
