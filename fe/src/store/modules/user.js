@@ -35,6 +35,10 @@ export default {
 
     },
     actions: {
+        createUser({commit}, data) {
+            return postRequest('/user', data, commit)
+                .catch(error => Promise.reject(error));
+        },
         signIn({commit}, data) {
             return postRequest('/oauth/token', {
                 username: data.username,
@@ -58,7 +62,7 @@ export default {
         },
         getUsers({commit}, data) {
             return getRequest('/user', data)
-                .then(response => commit("setUser", response))
+                .then(response => commit("setUsers", response))
                 .catch(error => Promise.reject(error));
         },
         updateUser({commit}, data) {

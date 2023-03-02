@@ -10,7 +10,7 @@
     <div class="w-3/6 form mx-auto">
       <label class="user-avatar" :class="{'cursor-pointer' : edit}">
         <label class="block avatar mx-auto" for="cover"
-               :style="{backgroundImage : `url(${!preview ? defaultImg: preview })`}"/>
+               :style="{backgroundImage : `url(${!preview  ? form.profile_pic ?? defaultImg: preview  })`}"/>
         <input v-if="edit" type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
       </label>
       <ErrorMessages :error="v$" :serverError="error"/>
@@ -35,7 +35,7 @@
                  :disabled="loading">
         </div>
         <div class="input-group">
-          <button class="block mx-auto save" @click="save" :disabled="loading">Save</button>
+          <button class="block mx-auto submit" @click="save" :disabled="loading">Save</button>
         </div>
       </div>
       <div class="form-content" v-else>

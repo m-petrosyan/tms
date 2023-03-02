@@ -1,4 +1,4 @@
-import {getRequest, putRequest} from "@/store/api";
+import {getRequest, postRequest} from "@/store/api";
 
 export default {
     state: {
@@ -37,8 +37,15 @@ export default {
                 .then(response => commit("setTask", response.data))
                 .catch(error => Promise.reject(error));
         },
-        updateTask({commit}, {data, id, to}) {
-            return putRequest(`/task/${id}/${to}`, {...data})
+        createTask({commit}, {data, param}) {
+            return postRequest(`/task/${param}`, data)
+                .catch(error => {
+                    commit("setTaskError", error.message)
+                    return Promise.reject(error)
+                });
+        },
+        updateTask({commit}, {data, id, param}) {
+            return postRequest(`/task/${id}/${param}`, data)
                 .catch(error => {
                     commit("setTaskError", error.message)
                     return Promise.reject(error)

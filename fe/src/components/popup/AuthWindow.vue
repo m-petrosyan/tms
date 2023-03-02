@@ -2,9 +2,9 @@
   <div class="px-10 h-full">
     <AuthNavbar v-model:active="active"/>
     <div class="pages-animation">
-      <div class="pages flex" :class="active">
-        <UserLogin class="page w-1/2"/>
-        <UserRegister class="page w-1/2"/>
+      <div class="pages flex items-center" :class="active">
+        <UserLogin @loadingVal="$emit('update:loading', $event)" class="page w-1/2"/>
+        <UserRegister @loadingVal="$emit('update:loading', $event)" v-model:active="active" class="page w-1/2"/>
       </div>
     </div>
   </div>
@@ -19,8 +19,11 @@ export default {
   name: "AuthWindow",
   data() {
     return {
-      active: 'register'
+      active: 'login'
     }
+  },
+  props: {
+    loading: Boolean
   },
   components: {UserRegister, UserLogin, AuthNavbar}
 }
