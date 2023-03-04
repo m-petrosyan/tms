@@ -6,6 +6,7 @@
 # TMS
 Task management system
 
+> Get more done, stress less with our task management system.
 
 Welcome to our task management website! Here's a guide on how to use platform:
 <ol>
