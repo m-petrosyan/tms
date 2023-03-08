@@ -60,5 +60,7 @@ php artisan serve
 > Vue
 ```
 yarn install
+.env.example -> .env
+.env  VUE_APP_CLIENT_ID => passport Client ID , VUE_APP_CLIENT_SECRET => passport Client secret, VUE_APP_URL => Be url, VUE_APP_API => Be api url
 yarn serve
 ```
