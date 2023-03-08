@@ -50,6 +50,7 @@ You can only edit tasks that you have created. To edit a task, click on the task
 
 > Laravel
 ```
+.env.example -> .env
 composer install
 php artisan migrate --seed
 php artisan key:generate
