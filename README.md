@@ -54,6 +54,7 @@ composer install
 php artisan migrate --seed
 php artisan key:generate
 php artisan passport:install
+php artisan storage:link 
 php artisan serve
 ```
 
