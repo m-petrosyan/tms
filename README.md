@@ -51,8 +51,8 @@ You can only edit tasks that you have created. To edit a task, click on the task
 > Laravel
 ```
 composer install
-php artisan passport:install
 php artisan migrate --seed
+php artisan passport:install
 php artisan serve
 ```
 
