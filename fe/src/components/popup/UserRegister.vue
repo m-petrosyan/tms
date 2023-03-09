@@ -60,7 +60,7 @@ export default {
       form: {
         username: {required, minLength: minLength(8), email},
         password: {required, minLength: minLength(8)},
-        full_name: {required, minLength: minLength(8)}
+        full_name: {required, minLength: minLength(2)}
       }
     }
   },
