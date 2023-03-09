@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->nullable()->constrained('users')->cascadeOnUpdate();
-            $table->foreignId('assigned_to')->nullable()->constrained('users')->cascadeOnUpdate();
+            $table->foreignId('created_by')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('assigned_to')->nullable()->constrained('users');
             $table->smallInteger('status')->default(0);
             $table->integer('index')->default(0);
             $table->string('title')->index();

@@ -15,7 +15,7 @@ class TaskObserver
      */
     public function creating(Task $task): void
     {
-        $task->created_by = auth()->id();
+        $task->created_by = auth()->id() ?? $task->created_by;
     }
 
     /**
@@ -37,7 +37,6 @@ class TaskObserver
      */
     public function updated(Task $task)
     {
-
     }
 
     /**

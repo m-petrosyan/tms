@@ -50,14 +50,19 @@ You can only edit tasks that you have created. To edit a task, click on the task
 
 > Laravel
 ```
+.env.example -> .env
 composer install
-php artisan passport:install
 php artisan migrate --seed
+php artisan key:generate
+php artisan passport:install
+php artisan storage:link 
 php artisan serve
 ```
 
 > Vue
 ```
 yarn install
+.env.example -> .env
+.env  VUE_APP_CLIENT_ID => passport Client ID , VUE_APP_CLIENT_SECRET => passport Client secret, VUE_APP_URL => Be url, VUE_APP_API => Be api url
 yarn serve
 ```
