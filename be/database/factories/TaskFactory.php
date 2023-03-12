@@ -22,8 +22,9 @@ class TaskFactory extends Factory
             'assigned_to' => User::inRandomOrder()->first()->id,
             'title' => $this->faker->text(10),
             'description' => $this->faker->text(150),
+            'index' => $this->faker->randomDigit(),
             'status' => array_rand([0, 1, 2, 3], 1),
-            'created_at' => now(),
+            'created_at' => $this->faker->dateTimeBetween('now', '+365 days'),
         ];
     }
 }

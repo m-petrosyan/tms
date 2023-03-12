@@ -28,7 +28,6 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::post('task/{user}', [TaskController::class, 'store']);
     Route::middleware(['task-permission'])->group(function () {
         Route::put('task/{task}/{user}', [TaskController::class, 'update']);
-        Route::post('task/{task}/img', [TaskController::class, 'updateImg']);
         Route::delete('task/{task}', [TaskController::class, 'destroy']);
     });
 });

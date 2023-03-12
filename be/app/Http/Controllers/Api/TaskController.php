@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Enum\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\TaskCreateRequest;
-use App\Http\Requests\Task\TaskImgUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Resources\Task\TaskResource;
 use App\Http\Resources\Task\TasksStatusCollection;
@@ -67,18 +66,6 @@ class TaskController extends Controller
     public function update(TaskUpdateRequest $request, Task $task, User $user): Response
     {
         $this->taskService->update($task, $user, $request->validated());
-
-        return response()->noContent();
-    }
-
-    /**
-     * @param  TaskImgUpdateRequest  $request
-     * @param  Task  $task
-     * @return Response
-     */
-    public function updateImg(TaskImgUpdateRequest $request, Task $task): Response
-    {
-        $this->taskService->updateImg($task, $request->img, 'img', '/task');
 
         return response()->noContent();
     }

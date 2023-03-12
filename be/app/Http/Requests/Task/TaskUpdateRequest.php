@@ -29,7 +29,8 @@ class TaskUpdateRequest extends FormRequest
             'title' => ['min:2'],
             'description' => ['min:8'],
             'status' => ['numeric', new Enum(StatusEnum::class)],
-            'index' => ['numeric']
+            'index' => ['numeric'],
+            'img' => ['nullable', 'mimes:jpeg,jpg,bmp,png,webp', 'max:5000'],
         ];
     }
 }

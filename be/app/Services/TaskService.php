@@ -13,7 +13,9 @@ class TaskService extends FileService
      */
     public function store(array $request, object $user): mixed
     {
-        return $user->taskAssigned()->create(Arr::only($request,['title','description','status'])+['assigned_to'=> $user->id,'index' => -1]);
+        return $user->taskAssigned()->create(
+            Arr::only($request, ['title', 'img', 'description', 'status']) + ['assigned_to' => $user->id, 'index' => -1]
+        );
     }
 
     /**
@@ -24,6 +26,8 @@ class TaskService extends FileService
      */
     public function update(object $task, object $user, array $request): void
     {
-        $task->update(Arr::only($request,['title','description','status','index'])+['assigned_to'=> $user->id]);
+        $task->update(
+            Arr::only($request, ['title', 'img', 'description', 'status', 'index']) + ['assigned_to' => $user->id]
+        );
     }
 }
