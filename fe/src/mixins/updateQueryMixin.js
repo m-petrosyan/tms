@@ -13,7 +13,7 @@ export default {
     props: {
         loading: Boolean
     },
-    created() {
+    mounted() {
         if (this.actions) {
             if (this.actions.get) this.getData(this.actions.get)
             if (this.actions.options) this.getData(this.actions.options, null)

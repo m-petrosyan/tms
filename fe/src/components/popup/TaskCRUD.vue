@@ -49,7 +49,7 @@
           <p>{{ form.created_at }}</p>
         </div>
       </div>
-      <div class="item flex gap-x-2 my-5" v-if="editOrCreate && options.data">
+      <div class="item flex gap-x-2 my-5" v-if="editOrCreate && options?.data">
         <div class="flex gap-x-2 w-full">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
@@ -57,7 +57,7 @@
                   d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
           </svg>
           <select name="" v-model="form.assigned_to" class="w-full">
-            <option :value="item" v-for="item in options.data" :key="item">{{ item.full_name }}</option>
+            <option v-for="item in options.data" :value="item" :key="item.id">{{ item.full_name }}</option>
           </select>
         </div>
       </div>
@@ -100,6 +100,9 @@ export default {
   methods: {
     checkEditCreate() {
       this.actions.post = this.$route.name === 'taskedit' ? 'updateTask' : 'createTask'
+      if (this.$route.name === 'createTask') {
+        delete this.actions.get
+      }
       this.editOrCreate = ['taskedit', 'taskcreate'].includes(this.$route.name)
     },
     uploadCover(file) {

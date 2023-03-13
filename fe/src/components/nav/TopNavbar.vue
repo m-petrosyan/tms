@@ -34,7 +34,9 @@
         <div class="user h-full opacity-75">
           <button class="frame h-full"
                   @click="$router.push({name: auth ? 'useredit' : 'auth'})">
-            <img :src="auth ? auth.profile_pic : require('@/assets/images/avatar_siluete_bg.jpg')" alt="">
+            <img
+                :src="auth && auth.profile_pic !=='' ? auth.profile_pic : require('@/assets/images/avatar_siluete_bg.jpg')"
+                alt="">
           </button>
         </div>
       </div>
