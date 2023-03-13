@@ -1,9 +1,9 @@
 <template>
   <div class="users flex gap-x-2">
-    <div class="user" :data-tooltip="users.created_by.full_name.split(' ')[0]"
+    <div class="user" v-if="users.created_by" :data-tooltip="users.created_by.full_name.split(' ')[0]"
          :style="{backgroundImage : `url(${users.created_by.profile_pic})`}"
          @click.stop="viewUser(users.created_by.id)"/>
-    <div class="user" :data-tooltip="users.assigned_to.full_name.split(' ')[0]"
+    <div class="user" v-if="users.assigned_to" :data-tooltip="users.assigned_to.full_name.split(' ')[0]"
          :style="{backgroundImage : `url(${ users.assigned_to.profile_pic})`}"
          @click.stop="viewUser(users.assigned_to.id)"/>
   </div>

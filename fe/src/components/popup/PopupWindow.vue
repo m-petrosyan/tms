@@ -1,7 +1,8 @@
 <template>
   <Teleport to="body" class="popup">
     <div class="modal">
-      <div class="modal-content relative" :class="{'task-edit' : Component === 'taskedit'}">
+      <div class="modal-content relative"
+           :class="{'taskview' : ['taskedit', 'taskcreate','taskview'].includes(Component)}">
         <PreloaderElement class="triple-spinner" v-if="loading"/>
         <button class="close-modal" @click="closeModal">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -23,8 +24,9 @@
 <script>
 import useredit from "@/components/popup/UserEdit.vue";
 import userview from "@/components/popup/UserEdit.vue";
-import taskedit from "@/components/popup/TaskViewEdit.vue";
-import taskcreate from "@/components/popup/TaskViewEdit.vue";
+import taskview from "@/components/popup/TaskCRUD.vue";
+import taskcreate from "@/components/popup/TaskCRUD.vue";
+import taskedit from "@/components/popup/TaskCRUD.vue";
 import auth from "@/components/popup/AuthWindow.vue";
 import PreloaderElement from "@/components/elements/Preloader.vue";
 import popupMixin from "@/mixins/popupMixin";
@@ -32,11 +34,6 @@ import popupMixin from "@/mixins/popupMixin";
 export default {
   name: "PopupWindow",
   mixins: [popupMixin],
-  data() {
-    return {
-      comp: 'UserEdit'
-    }
-  },
   computed: {
     Component() {
       return this.modalComponent
@@ -50,6 +47,7 @@ export default {
     PreloaderElement,
     useredit,
     userview,
+    taskview,
     taskedit,
     taskcreate,
     auth
@@ -75,7 +73,7 @@ export default {
     width: 500px;
     padding: 20px;
 
-    &.task-edit {
+    &.taskview {
       padding: 0;
 
       .close-modal {
@@ -126,7 +124,5 @@ export default {
       }
     }
   }
-
-
 }
 </style>

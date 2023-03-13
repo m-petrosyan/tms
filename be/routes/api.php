@@ -22,6 +22,7 @@ Route::resource('task', TaskController::class)->only('index', 'show');
 Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::get('auth', [UserController::class, 'auth']);
     Route::post('user/img', [UserController::class, 'updateImg']);
+    Route::get('user', [UserController::class, 'index']);
     Route::put('user', [UserController::class, 'update']);
     Route::delete('user', [UserController::class, 'destroy']);
 

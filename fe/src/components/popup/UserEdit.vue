@@ -26,12 +26,13 @@
                  :disabled="loading">
         </div>
         <div class="input-group">
-          <input type="password" v-model="form.password" class="block mx-auto" placeholder="password" autocomplete="off"
+          <input type="password" v-model="form.password" class="block mx-auto" placeholder="password"
+                 autocomplete="new-password"
                  :disabled="loading">
         </div>
         <div class="input-group">
           <input type="password" v-model="form.repassword" class="block mx-auto" placeholder="re-password"
-                 autocomplete="off"
+                 autocomplete="new-password"
                  :disabled="loading">
         </div>
         <div class="input-group">
@@ -55,10 +56,11 @@
 import useVuelidate from "@vuelidate/core";
 import {email, minLength, requiredIf, sameAs} from "@vuelidate/validators";
 import updateQueryMixin from "@/mixins/updateQueryMixin";
+import popupMixin from "@/mixins/popupMixin";
 
 export default {
   name: "UserEdit",
-  mixins: [updateQueryMixin],
+  mixins: [updateQueryMixin, popupMixin],
   data() {
     return {
       defaultImg: require('@/assets/images/avatar_silhouette.png'),
@@ -72,7 +74,9 @@ export default {
     }
   },
   mounted() {
-    !this.edit ? this.$store.dispatch('getUser', this.$route.params.id).then(() => this.$emit('update:loading', false)) : this.$store.dispatch('auth').then(() => this.$emit('update:loading', false))
+    !this.edit
+        ? this.$store.dispatch('getUser', this.$route.params.id).then(() => this.$emit('update:loading', false))
+        : this.$store.dispatch('auth').then(() => this.$emit('update:loading', false))
   },
   methods: {
     uploadCover(file) {
@@ -83,7 +87,7 @@ export default {
       this.$store.dispatch('updateUserImg', formData).then(() => this.$store.commit('setUserImg', this.preview))
     },
     save() {
-      this.submit()
+      this.submit().then(() => this.closeModal())
     },
     logout() {
       sessionStorage.clear();
@@ -106,7 +110,7 @@ export default {
       }
     }
   },
-  beforeMount() {
+  beforeMount() { //todoinfo ստուգել պետք ա թե չէ
     this.$emit('update:loading', true)
   },
   computed: {
@@ -116,7 +120,6 @@ export default {
   },
   watch: {
     form() {
-      this.form.repassword = ""
       this.image = this.form.profile_pic
     }
   },

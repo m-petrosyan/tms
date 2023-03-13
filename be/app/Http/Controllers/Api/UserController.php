@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserImgUpdateRequest;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Services\UserService;
@@ -23,11 +24,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return UserCollection
      */
-    public function index()
+    public function index(): UserCollection
     {
-        //
+        return new UserCollection(User::get());
     }
 
     /**

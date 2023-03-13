@@ -1,7 +1,7 @@
 <template>
   <div class="task-content w-3/12" :status="task.title">
     <h3 class="title">{{ title }}</h3>
-    <div class="list-content" tag="transition-group" :component-data="{name:'fade'}">
+    <div class="list-content">
       <vuedraggable
           :status="task.status"
           :disabled="disable"
@@ -13,8 +13,8 @@
           itemKey="name"
       >
         <template #item="{ element }">
-          <div class="item" :class="{'disabled' : auth && access(element)}" @click.prevent="viewTask(element.id)">
-            <div class="item-img">
+          <div class="item" :class="{'disabled' : access(element)}" @click.prevent="viewTask(element.id)">
+            <div class="item-img" v-if="element.img">
               <img class="img" :src="element.img" alt="">
             </div>
             <div class="item-info">
@@ -68,10 +68,13 @@ export default {
   },
   methods: {
     access(el) {
-      return ![el.created_by.id, el.assigned_to.id].includes(this.auth.id)
+      const ids = [];
+      if (el.created_by?.id) ids.push(el.created_by.id)
+      if (el.assigned_to?.id) ids.push(el.assigned_to.id)
+      return this.auth && !ids.includes(this.auth.id)
     },
     viewTask(id) {
-      this.$router.push({name: 'taskedit', params: {id: id}})
+      this.$router.push({name: 'taskview', params: {id: id}})
     },
     end(e) {
       this.updateTask({
@@ -90,7 +93,7 @@ export default {
   },
   computed: {
     disable() {
-      return !this.auth ? true : false
+      return !this.auth
     }
   }
 }
@@ -152,7 +155,7 @@ export default {
         margin-bottom: 15px;
 
         &.disabled {
-          background-color: #f44336;
+          background-color: #484242;
           border-radius: 5px;
 
           .item-info {

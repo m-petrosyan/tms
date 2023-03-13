@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '@/views/TasksWrapper.vue'
-import TaskViewEdit from "@/components/popup/TaskViewEdit.vue";
+import TaskCRUD from "@/components/popup/TaskCRUD.vue";
 import UserEdit from "@/components/popup/UserEdit.vue";
 import AuthWindow from "@/components/popup/AuthWindow.vue";
 
@@ -27,13 +27,23 @@ const routes = [
     },
     {
         path: '/task',
-        name: 'taskcreate',
-        component: TaskViewEdit
-    },
-    {
-        path: '/task/:id',
-        name: 'taskedit',
-        component: TaskViewEdit
+        children: [
+            {
+                path: 'create',
+                name: 'taskcreate',
+                component: TaskCRUD
+            },
+            {
+                path: ':id/edit',
+                name: 'taskedit',
+                component: TaskCRUD
+            },
+            {
+                path: ':id',
+                name: 'taskview',
+                component: TaskCRUD
+            },
+        ]
     },
 ]
 

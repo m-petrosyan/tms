@@ -17,7 +17,7 @@ export default {
     },
     watch: {
         $route(to) {
-            if (['taskedit', 'taskcreate', 'auth', 'useredit', 'userview'].includes(to.name)) {
+            if (['taskview', 'taskedit', 'taskcreate', 'auth', 'useredit', 'userview'].includes(to.name)) {
                 this.showModal = true
                 this.modalComponent = to.name
             } else {

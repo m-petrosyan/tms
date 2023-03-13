@@ -21,14 +21,14 @@
           <h3 v-if="!editOrCreate">{{ form.title }}</h3>
           <input v-else type="text" placeholder="title" v-model="form.title">
         </div>
-        <button class="editOrCreate" v-if="auth ? form.created_by?.id === auth.id && !editOrCreate : false"
-                @click="() => editOrCreate=true">
+        <router-link :to="{name: 'taskedit', params: {id: form.id}}" class="editOrCreate"
+                     v-if="auth ? form.created_by?.id === auth.id : false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
                   d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
           </svg>
-        </button>
+        </router-link>
       </div>
       <div class="item description flex gap-x-2 my-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -76,7 +76,7 @@ import UsersInfo from "@/components/elements/UsersInfo.vue";
 import popupItemMixin from "@/mixins/popupItemMixin";
 
 export default {
-  name: "TaskViewEdit",
+  name: "TaskCRUD",
   mixins: [updateQueryMixin, popupItemMixin],
   data() {
     return {
@@ -88,16 +88,20 @@ export default {
       actions: {
         get: 'getTask',
         options: 'getUsers',
-        post: this.$route.params.id ? 'updateTask' : 'createTask',
+        post: null,
         error: 'getTaskError',
         formData: true
       }
     }
   },
   mounted() {
-    this.editOrCreate = this.$route.name === 'taskcreate'
+    this.checkEditCreate()
   },
   methods: {
+    checkEditCreate() {
+      this.actions.post = this.$route.name === 'taskedit' ? 'updateTask' : 'createTask'
+      this.editOrCreate = ['taskedit', 'taskcreate'].includes(this.$route.name)
+    },
     uploadCover(file) {
       this.preview = URL.createObjectURL(file.target.files[0])
       this.form.img = this.image = file.target.files[0]
@@ -123,6 +127,11 @@ export default {
   setup() {
     return {v$: useVuelidate()}
   },
+  watch: {
+    $route() {
+      this.checkEditCreate()
+    }
+  }
 }
 </script>
 

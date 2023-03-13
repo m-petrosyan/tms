@@ -53,7 +53,10 @@ export default {
         auth({commit}) {
             return getRequest('/auth', '')
                 .then(response => commit("setAuth", response.data))
-                .catch(error => Promise.reject(error));
+                .catch(error => {
+                    sessionStorage.removeItem('token')
+                    return Promise.reject(error)
+                })
         },
         getUser({commit}, id) {
             return getRequest(`/user/${id}`, '')

@@ -3,7 +3,7 @@
     <LoginAlesrtMessages v-if="!auth && !closeAlert" v-model:closeAlert="closeAlert"/>
     <ErrorMessages v-if="!showModal" error="false" :serverError="error" width="w-fit"/>
     <div v-if="form" class="wrapper flex w-8/12 m-auto justify-between gap-x-3 mt-16">
-      <TaskItem v-for="(item, index) in form.data" :key="item.id"
+      <TaskItem v-for="(item, index) in form.data" :key="item.status"
                 :task="item"
                 :title="titles[index]"
                 :updateTask="updateTask"

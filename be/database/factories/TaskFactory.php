@@ -23,6 +23,7 @@ class TaskFactory extends Factory
             'title' => $this->faker->text(10),
             'description' => $this->faker->text(150),
             'status' => array_rand([0, 1, 2, 3], 1),
+            'index' => $this->faker->numberBetween(10, 100),
             'created_at' => now(),
         ];
     }
