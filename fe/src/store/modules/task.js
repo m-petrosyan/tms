@@ -45,7 +45,6 @@ export default {
                 });
         },
         updateTask({commit}, {data, id, param}) {
-            console.log(data, id, param)
             return postRequest(`/task/${id}/${param}`, data)
                 .catch(error => {
                     commit("setTaskError", error.message)

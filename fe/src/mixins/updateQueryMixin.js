@@ -36,7 +36,6 @@ export default {
                     if (!this.image) newForm.img = ''
                     const formData = new FormData
                     for (const [key, value] of Object.entries(newForm)) {
-                        console.log(key, value)
                         formData.append(key, value);
                     }
                     data = {data: formData}
@@ -51,7 +50,6 @@ export default {
                 if (param) data.param = param
 
                 this.$emit('update:loading', true)
-                console.log(data)
                 return this.$store.dispatch(this.actions.post, data)
                     .then(() => this.$store.commit(this.actions.error.replace("get", "set"), null))
                     .catch(error => {
