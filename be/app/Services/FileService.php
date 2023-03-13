@@ -2,12 +2,43 @@
 
 namespace App\Services;
 
+use App\Helpers\General;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 abstract class FileService
 {
+    /**
+     * @param $model
+     * @param $field
+     * @param $path
+     * @return void
+     */
+    public function checkChangeFile($model, $field, $path): void
+    {
+        if ($model->isDirty($field) && gettype($model[$field]) !== 'string') {
+            if ($model->getOriginal($field)) {
+                General::deleteFile($model->getOriginal($field), $path);
+            }
+            $this->fileCheckUpload($model, $model[$field], $field, $path);
+        }
+    }
+
+    /**
+     * @param $model
+     * @param $request
+     * @param $field
+     * @param $path
+     * @return void
+     */
+    public function fileCheckUpload($model, $request, $field, $path): void
+    {
+        if (isset($request)) {
+            $this->updateImg($model, $request, $field, $path);
+        }
+    }
+
     /**
      * @param  object  $model
      * @param $img
@@ -17,14 +48,7 @@ abstract class FileService
      */
     public function updateImg(object $model, $img, string $field, string $path): void
     {
-        $fileName = '';
-
-        if (!$img) {
-            $this->deleteMedia($field, $path);
-        } else {
-            $fileName = $this->uploadMedia($img, $path)['name'];
-        }
-
+        $fileName = $this->uploadMedia($img, '/'.$path)['name'];
         $model->update([$field => $fileName]);
     }
 

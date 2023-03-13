@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Helpers;
 
 use App\Services\FileService;
 use Illuminate\Support\Facades\Storage;
 
-class General extends FileService {
+class General extends FileService
+{
 
     public static function deleteFile(string $file, string $path)
     {
@@ -13,7 +15,7 @@ class General extends FileService {
 
     public static function getPath($fileName, string $disk = '', string $assetsPath = 'storage/'): string
     {
-        if (! $fileName) {
+        if (!$fileName) {
             return '';
         }
 
@@ -23,6 +25,8 @@ class General extends FileService {
 
         $disk = $disk ?: config('filesystems.default');
 
-        return $disk && Storage::disk($disk)->exists($fileName) ? Storage::disk($disk)->url($fileName) : asset($assetsPath.$fileName);
+        return $disk && Storage::disk($disk)->exists($fileName) ? Storage::disk($disk)->url($fileName) : asset(
+            $assetsPath.$fileName
+        );
     }
 }

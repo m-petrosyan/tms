@@ -4,8 +4,9 @@ namespace App\Observers;
 
 use App\Helpers\General;
 use App\Models\Task;
+use App\Services\FileService;
 
-class TaskObserver
+class TaskObserver extends FileService
 {
     /**
      * Handle the Task "creating" event.
@@ -18,15 +19,18 @@ class TaskObserver
         $task->created_by = auth()->id() ?? $task->created_by;
     }
 
+    public function created(Task $task): void
+    {
+        $this->checkChangeFile($task, 'img', 'task');
+    }
+
     /**
      * @param  Task  $task
      * @return void
      */
     public function updating(Task $task): void
     {
-        if ($task->isDirty('img') && $task->getOriginal('img')) {
-            General::deleteFile($task->getOriginal('img'), 'task');
-        }
+        $this->checkChangeFile($task, 'img', 'task');
     }
 
     /**

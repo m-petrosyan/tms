@@ -26,9 +26,10 @@ class TaskCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required','min:2'],
+            'title' => ['required', 'min:2'],
             'description' => ['min:8'],
-            'status' => ['numeric', new Enum(StatusEnum::class)]
+            'status' => ['numeric', new Enum(StatusEnum::class)],
+            'img' => ['nullable', 'mimes:jpeg,jpg,bmp,png,webp', 'max:5000'],
         ];
     }
 }
