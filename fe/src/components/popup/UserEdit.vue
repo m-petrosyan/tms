@@ -10,7 +10,7 @@
     <div class="w-3/6 form mx-auto">
       <label class="user-avatar" :class="{'cursor-pointer' : edit}">
         <label class="block avatar mx-auto" for="cover"
-               :style="{backgroundImage : `url(${!preview  ? form.profile_pic ?? defaultImg: preview  })`}"/>
+               :style="{backgroundImage : `url(${preview  ?? form.profile_pic !== '' ? form.profile_pic :  defaultImg })`}"/>
         <input v-if="edit" type="file" hidden="" accept="image/*" id="cover" @change="uploadCover" :disabled="loading">
       </label>
       <ErrorMessages :error="v$" :serverError="error"/>
