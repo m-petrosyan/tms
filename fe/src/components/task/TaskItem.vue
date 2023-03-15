@@ -81,13 +81,13 @@ export default {
         data: {index: e.newIndex},
         id: e.from.__draggable_component__.context.element.id,
         to: e.from.__draggable_component__.context.element.assigned_to.id,
-        status: e.to.__vueParentComponent.attrs.status
+        status: e.to.__draggable_component__._.attrs.status
       }, {
         id: e.from.__draggable_component__.context.element.id,
         index: e.oldIndex,
         newIndex: e.newIndex,
         status: e.from.__draggable_component__.context.element.status,
-        newStatus: e.to.__vueParentComponent.attrs.status
+        newStatus: e.to.__draggable_component__._.attrs.status
       })
     },
   },
