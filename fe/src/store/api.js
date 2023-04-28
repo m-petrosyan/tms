@@ -3,7 +3,7 @@ import axios from "axios";
 const getRequest = async (url, data) => {
     let headers = await getHeader();
     return axios
-        .get(process.env.VUE_APP_API + url, {...headers, params: data})
+        .get(import.meta.env.VITE_APP_API + url, {...headers, params: data})
         .then(response => response.data)
         .catch(error => Promise.reject(error.response.data.data))
 };
@@ -11,7 +11,7 @@ const getRequest = async (url, data) => {
 const postRequest = async (url, data) => {
     let headers = await getHeader();
     return axios
-        .post(process.env.VUE_APP_API + url, data, headers)
+        .post(import.meta.env.VITE_APP_API + url, data, headers)
         .then(response => response.data)
         .catch(error => Promise.reject(error.response.data));
 };
@@ -28,19 +28,10 @@ const deleteRequest = async (url, body) => {
 const putRequest = async (url, body) => {
     let headers = await getHeader();
     return axios
-        .put(process.env.VUE_APP_API + url, body, headers)
+        .put(import.meta.env.VITE_APP_API + url, body, headers)
         .then(response => response.data)
         .catch(error => Promise.reject(error.response.data));
 };
-
-const patchRequest = async (url, body) => {
-    let headers = await getHeader();
-    return axios
-        .patch(url, body, headers)
-        .then(response => response.data)
-        .catch(error => Promise.reject(error.response.data));
-};
-
 const getHeader = async () => {
     let access_token = sessionStorage.getItem('token')
     return {
@@ -51,4 +42,4 @@ const getHeader = async () => {
     };
 };
 
-export {postRequest, getRequest, patchRequest, putRequest, deleteRequest}
+export {postRequest, getRequest, putRequest, deleteRequest}

@@ -3,7 +3,7 @@
     <div class="flex justify-between mx-auto w-8/12 h-full">
       <div class="logo">
         <router-link to="/">
-          <img :src="require('@/assets/images/logo.png')" alt="">
+          <img :src="logo" alt="">
         </router-link>
       </div>
       <div class="search">
@@ -34,7 +34,7 @@
         <div class="user h-full opacity-75">
           <button class="frame h-full"
                   @click="$router.push({name: auth ? 'useredit' : 'auth'})">
-            <img :src="auth ? auth.profile_pic : require('@/assets/images/avatar_siluete_bg.jpg')" alt="">
+            <img :src="auth ? auth.profile_pic : noAvatar " alt="">
           </button>
         </div>
       </div>
@@ -46,11 +46,15 @@
 <script>
 import PopupWindow from "@/components/popup/PopupWindow.vue";
 import {debounce} from 'vue-debounce'
+import logo from '@/assets/images/logo.png'
+import noAvatar from '@/assets/images/avatar_siluete_bg.jpg'
 
 export default {
   name: "TopNavbar",
   data() {
     return {
+      logo: logo,
+      noAvatar: noAvatar,
       search: ''
     }
   },

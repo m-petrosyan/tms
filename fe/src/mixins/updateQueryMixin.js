@@ -32,7 +32,7 @@ export default {
                 let data
 
                 if (this.actions.formData) {
-                    let newForm = structuredClone(this.form)
+                    let newForm = {...this.form}
                     if (!this.image) delete newForm.img
                     const formData = new FormData
                     for (const [key, value] of Object.entries(newForm)) {

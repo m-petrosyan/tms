@@ -49,7 +49,7 @@
           <p>{{ form.created_at }}</p>
         </div>
       </div>
-      <div class="item flex gap-x-2 my-5" v-if="editOrCreate && options.data">
+      <div class="item flex gap-x-2 my-5" v-if="editOrCreate && options?.data">
         <div class="flex gap-x-2 w-full">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-6 h-6">
@@ -74,6 +74,7 @@ import {minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import UsersInfo from "@/components/elements/UsersInfo.vue";
 import popupItemMixin from "@/mixins/popupItemMixin";
+import noimage from '@/assets/images/noimage.jpg'
 
 export default {
   name: "TaskCRUD",
@@ -81,12 +82,12 @@ export default {
   data() {
     return {
       editOrCreate: false,
-      defaultImg: require('@/assets/images/noimage.jpg'),
+      defaultImg: noimage,
       image: null,
       preview: null,
       newForm: null,
       actions: {
-        get: 'getTask',
+        get: !this.$route.params.id ? null : 'getTask',
         options: 'getUsers',
         post: null,
         error: 'getTaskError',
@@ -94,7 +95,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.checkEditCreate()
   },
   methods: {

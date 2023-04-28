@@ -44,8 +44,8 @@ export default {
                 username: data.username,
                 password: data.password,
                 grant_type: 'password',
-                client_id: process.env.VUE_APP_CLIENT_ID,
-                client_secret: process.env.VUE_APP_CLIENT_SECRET
+                client_id: import.meta.env.VITE_APP_CLIENT_ID,
+                client_secret: import.meta.env.VITE_APP_CLIENT_SECRET
             })
                 .then(response => commit("setToken", response.access_token))
                 .catch(error => Promise.reject(error));
