@@ -57,13 +57,14 @@ import useVuelidate from "@vuelidate/core";
 import {email, minLength, requiredIf, sameAs} from "@vuelidate/validators";
 import updateQueryMixin from "@/mixins/updateQueryMixin";
 import popupMixin from "@/mixins/popupMixin";
+import defaultImg from '@/assets/images/avatar_silhouette.png'
 
 export default {
   name: "UserEdit",
   mixins: [updateQueryMixin, popupMixin],
   data() {
     return {
-      defaultImg: require('@/assets/images/avatar_silhouette.png'),
+      defaultImg: defaultImg,
       preview: null,
       edit: !this.$route.params.id,
       profile_pic: null,
